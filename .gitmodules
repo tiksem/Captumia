@@ -1,0 +1,7 @@
+
+[submodule "dependencies/android-utils"]
+	path = dependencies/android-utils
+	url = https://github.com/tiksem/android-utils.git
+[submodule "dependencies/general-utils"]
+	path = dependencies/general-utils
+	url = https://github.com/tiksem/general-utils.git
