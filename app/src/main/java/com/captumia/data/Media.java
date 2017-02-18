@@ -13,7 +13,7 @@ public class Media {
 
     @JsonSetter("media_details")
     public void setImageDetails(JsonNode jsonNode) {
-        displayInListUrl = jsonNode.get("sizes").get("medium").get("source_url").asText();
+        displayInListUrl = jsonNode.get("sizes").get("large").get("source_url").asText();
     }
 
     public String getDisplayInListUrl() {
