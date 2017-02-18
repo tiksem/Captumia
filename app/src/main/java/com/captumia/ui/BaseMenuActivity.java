@@ -3,17 +3,16 @@ package com.captumia.ui;
 import android.os.Bundle;
 
 import com.captumia.R;
-import com.captumia.network.CaptumiaRequestManager;
-import com.utilsframework.android.navdrawer.NavigationDrawerActivity;
+import com.captumia.network.AppRequestManager;
 import com.utilsframework.android.navdrawer.NavigationDrawerMenuActivity;
 
 public abstract class BaseMenuActivity extends NavigationDrawerMenuActivity {
-    private CaptumiaRequestManager requestManager;
+    private AppRequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestManager = new CaptumiaRequestManager();
+        requestManager = new AppRequestManager();
     }
 
     @Override

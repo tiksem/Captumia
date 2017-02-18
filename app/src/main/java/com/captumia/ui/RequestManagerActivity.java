@@ -3,15 +3,15 @@ package com.captumia.ui;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.captumia.network.CaptumiaRequestManager;
+import com.captumia.network.AppRequestManager;
 
 public class RequestManagerActivity extends AppCompatActivity {
-    private CaptumiaRequestManager requestManager;
+    private AppRequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestManager = new CaptumiaRequestManager();
+        requestManager = new AppRequestManager();
     }
 
     @Override

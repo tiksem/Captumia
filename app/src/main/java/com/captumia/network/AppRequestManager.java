@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import retrofit2.Response;
 
-public class CaptumiaRequestManager extends RetrofitRequestManager<ErrorData> {
+public class AppRequestManager extends RetrofitRequestManager {
     @Override
-    protected ErrorData createErrorData(Response response) {
-        return new ErrorData();
+    protected <T> Object getHttpResponseExceptionData(Response<T> response) throws IOException {
+        return null;
     }
 }

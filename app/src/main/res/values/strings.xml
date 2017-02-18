@@ -6,4 +6,5 @@
     <string name="fashion">Fashion</string>
     <string name="accessories">Accessories</string>
     <string name="places">Places</string>
+    <string name="retry">Retry</string>
 </resources>

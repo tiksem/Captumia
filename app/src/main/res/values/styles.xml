@@ -11,4 +11,9 @@
     <style name="ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlActivated">#fff</item>
     </style>
+
+    <style name="contrastButton">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">@drawable/contrast_button</item>
+    </style>
 </resources>

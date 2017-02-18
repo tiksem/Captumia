@@ -2,25 +2,26 @@ package com.captumia.ui;
 
 import android.support.v4.app.Fragment;
 
-import com.utilsframework.android.navdrawer.FragmentFactory;
-import com.utilsframework.android.navdrawer.TabsAdapter;
+import com.captumia.R;
+import com.utilsframework.android.navdrawer.NoTabsFragmentFactory;
 
-public class MainMenuFragmentsFactory implements FragmentFactory {
-    @Override
-    public Fragment createFragmentBySelectedItem(int selectedItemId, int tabIndex,
-                                                 int navigationLevel) {
-        return new Fragment();
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainMenuFragmentsFactory extends NoTabsFragmentFactory {
+    private static final Map<Integer, Integer> MENU_ID_CATEGORY_ID_MAP = new HashMap<>();
+
+    static {
+        MENU_ID_CATEGORY_ID_MAP.put(R.id.accessories, 72);
+        MENU_ID_CATEGORY_ID_MAP.put(R.id.fashion, 61);
+        MENU_ID_CATEGORY_ID_MAP.put(R.id.makeup_artist, 71);
+        MENU_ID_CATEGORY_ID_MAP.put(R.id.photographers, 44);
+        MENU_ID_CATEGORY_ID_MAP.put(R.id.places, 63);
     }
 
     @Override
-    public void initTab(int currentSelectedItem,
-                        int tabIndex, int navigationLevel,
-                        TabsAdapter.Tab tab) {
-
-    }
-
-    @Override
-    public int getTabsCount(int selectedItemId, int navigationLevel) {
-        return 1;
+    public Fragment createFragmentBySelectedItem(int selectedItem) {
+        int categoryId = MENU_ID_CATEGORY_ID_MAP.get(selectedItem);
+        return PostsByCategoryFragment.create(categoryId);
     }
 }
