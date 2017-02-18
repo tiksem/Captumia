@@ -30,16 +30,20 @@ public class PostImageTransformation implements com.squareup.picasso.Transformat
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-
-        float radius = MeasureUtils.convertDpToPixel(RADIUS_IN_DP, context);
-        Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(),
-                Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        RectF rect = new RectF(0, 0, source.getWidth(), source.getHeight());
-        canvas.drawRoundRect(rect, radius, radius, paint);
         Paint darkTintPaint = new Paint();
         darkTintPaint.setColor(context.getResources().getColor(R.color.postDarkTint));
+
+        float radius = MeasureUtils.convertDpToPixel(RADIUS_IN_DP, context);
+        int height = source.getHeight();
+        Bitmap output = Bitmap.createBitmap(source.getWidth(), height,
+                Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        RectF rect = new RectF(0, 0, source.getWidth(), height);
+        canvas.drawRoundRect(rect, radius, radius, paint);
         canvas.drawRoundRect(rect, radius, radius, darkTintPaint);
+        rect.top = height - radius;
+        canvas.drawRect(rect, paint);
+        canvas.drawRect(rect, darkTintPaint);
 
         if (source != output) {
             source.recycle();
