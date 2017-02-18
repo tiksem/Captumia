@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Captumia</string>
+    <string name="services_menu_header_title">Explore All Services</string>
+    <string name="photographers">Photographers</string>
+    <string name="makeup_artist">Makeup artist</string>
+    <string name="fashion">Fashion</string>
+    <string name="accessories">Accessories</string>
+    <string name="places">Places</string>
 </resources>
