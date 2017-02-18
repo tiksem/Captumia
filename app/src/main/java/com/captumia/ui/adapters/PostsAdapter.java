@@ -2,14 +2,19 @@ package com.captumia.ui.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.captumia.R;
 import com.captumia.data.Post;
+import com.captumia.lib.RoundedTransformation;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
 import com.utilsframework.android.adapters.navigation.LazyLoadingListAdapter;
+import com.utilsframework.android.view.GuiUtilities;
 
 public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
+    private static final int POST_IMAGE_CORNERS_RADIUS = 20;
+
     private final Picasso picasso;
 
     public PostsAdapter(Context context) {
@@ -28,10 +33,20 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
     }
 
     @Override
-    protected void reuseView(Post post,
-                             PostViewHolder postViewHolder,
+    protected void reuseView(final Post post,
+                             final PostViewHolder postViewHolder,
                              int position,
                              View view) {
-        picasso.load(post.getMedia().getDisplayInListUrl()).into(postViewHolder.image);
+        GuiUtilities.executeWhenViewMeasured(postViewHolder.image, new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageView = postViewHolder.image;
+                picasso.load(post.getMedia().getDisplayInListUrl()).
+                        resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
+                        centerCrop().
+                        transform(new RoundedTransformation(POST_IMAGE_CORNERS_RADIUS, 0)).
+                        into(imageView);
+            }
+        });
     }
 }
