@@ -18,7 +18,7 @@ public class MainMenuActivity extends BaseMenuActivity {
 
     @Override
     protected int getCurrentSelectedNavigationItemId() {
-        return 0;
+        return R.id.photographers;
     }
 
     @Override
