@@ -8,11 +8,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="120dp">
+
         <ImageView
             android:id="@+id/image"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
     <FrameLayout

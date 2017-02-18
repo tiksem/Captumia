@@ -32,13 +32,13 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
 
     @Override
     protected void reuseView(final Post post,
-                             final PostViewHolder postViewHolder,
+                             final PostViewHolder holder,
                              int position,
                              View view) {
-        GuiUtilities.executeWhenViewMeasured(postViewHolder.image, new Runnable() {
+        GuiUtilities.executeWhenViewMeasured(holder.image, new Runnable() {
             @Override
             public void run() {
-                ImageView imageView = postViewHolder.image;
+                ImageView imageView = holder.image;
                 picasso.load(post.getMedia().getDisplayInListUrl()).
                         resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
                         centerCrop().
@@ -46,5 +46,6 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
                         into(imageView);
             }
         });
+        holder.title.setText(post.getTitle());
     }
 }
