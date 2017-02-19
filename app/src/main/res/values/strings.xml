@@ -11,4 +11,5 @@
     <string name="welcome_text">Are you ready to capture your valuable moments?! Let\'s explore.</string>
     <string name="search">Search</string>
     <string name="search_edit_home_hint">What are you looking for?</string>
+    <string name="no_results">Perhaps try revising your search by expanding your search radius or create a listing instead!</string>
 </resources>

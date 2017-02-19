@@ -25,4 +25,9 @@ public abstract class BasePostsFragment extends BaseLazyLoadingFragment<Post> {
     protected int getNoInternetConnectionViewId() {
         return R.id.no_connection;
     }
+
+    @Override
+    protected int getEmptyListResourceId() {
+        return R.id.empty;
+    }
 }

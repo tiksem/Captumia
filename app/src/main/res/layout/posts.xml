@@ -12,4 +12,5 @@
         android:layout_height="match_parent" />
 
     <include layout="@layout/loading_and_no_connection"/>
+    <include layout="@layout/empty_view" />
 </FrameLayout>
