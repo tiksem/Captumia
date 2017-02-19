@@ -8,6 +8,7 @@
                  android:background="@color/colorPrimary"
                  android:layout_height="100dp">
         <ImageView
+            android:id="@+id/logo"
             android:layout_gravity="center_vertical"
             android:src="@drawable/logo"
             android:adjustViewBounds="true"

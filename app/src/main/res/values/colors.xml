@@ -6,5 +6,5 @@
     <color name="postDarkTint">#64000000</color>
     <color name="postBottomBorder">#dedede</color>
     <color name="postShadow">#eeeeee</color>
-    <color name="postPlaceHolder">#434343</color>
+    <color name="imagePlaceHolder">#434343</color>
 </resources>

@@ -12,6 +12,7 @@ public class MainMenuActivity extends BaseMenuActivity {
         super.onCreate(savedInstanceState);
         View header = View.inflate(this, R.layout.menu_header, null);
         getNavigationView().addHeaderView(header);
+        registerHeaderItemAsSelectable(R.id.logo);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class MainMenuActivity extends BaseMenuActivity {
 
     @Override
     protected int getCurrentSelectedNavigationItemId() {
-        return R.id.photographers;
+        return R.id.logo;
     }
 
     @Override

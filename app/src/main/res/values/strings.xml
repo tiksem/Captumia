@@ -7,4 +7,6 @@
     <string name="accessories">Accessories</string>
     <string name="places">Places</string>
     <string name="retry">Retry</string>
+    <string name="welcome">Welcome to Captumia</string>
+    <string name="welcome_text">Are you ready to capture your valuable moments?! Let\'s explore.</string>
 </resources>

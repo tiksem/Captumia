@@ -21,6 +21,10 @@ public class MainMenuFragmentsFactory extends NoTabsFragmentFactory {
 
     @Override
     public Fragment createFragmentBySelectedItem(int selectedItem) {
+        if (selectedItem == R.id.logo) {
+            return new HomeFragment();
+        }
+
         int categoryId = MENU_ID_CATEGORY_ID_MAP.get(selectedItem);
         return PostsByCategoryFragment.create(categoryId);
     }
