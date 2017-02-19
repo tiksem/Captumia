@@ -48,5 +48,13 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
             }
         });
         holder.title.setText(post.getTitle());
+        String phone = post.getPhone();
+
+        if (phone != null) {
+            holder.phone.setText(phone);
+            GuiUtilities.setVisibility(View.VISIBLE, holder.phone, holder.contacts);
+        } else {
+            GuiUtilities.setVisibility(View.GONE, holder.phone, holder.contacts);
+        }
     }
 }
