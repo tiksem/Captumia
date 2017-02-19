@@ -16,6 +16,7 @@ public class PostViewHolder {
     public TextView title;
     public TextView phone;
     public View contacts;
+    public TextView address;
 
     public PostViewHolder(View view) {
         image = (ImageView) view.findViewById(R.id.image);
@@ -23,6 +24,7 @@ public class PostViewHolder {
         rating = GuiUtilities.getChildrenAsList(ratingContainerView, ImageView.class);
         title = (TextView) view.findViewById(R.id.title);
         phone = (TextView) view.findViewById(R.id.phone);
+        address = (TextView) view.findViewById(R.id.address);
         contacts = view.findViewById(R.id.contacts);
     }
 }

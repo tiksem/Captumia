@@ -1,6 +1,7 @@
 package com.captumia.ui.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -9,8 +10,11 @@ import com.captumia.data.Post;
 import com.captumia.ui.PostImageTransformation;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
+import com.utils.framework.strings.Strings;
 import com.utilsframework.android.adapters.navigation.LazyLoadingListAdapter;
 import com.utilsframework.android.view.GuiUtilities;
+
+import java.util.List;
 
 public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
     private final Picasso picasso;
@@ -48,13 +52,24 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
             }
         });
         holder.title.setText(post.getTitle());
-        String phone = post.getPhone();
 
+        holder.contacts.setVisibility(View.GONE);
+
+        String phone = post.getPhone();
         if (phone != null) {
             holder.phone.setText(phone);
             GuiUtilities.setVisibility(View.VISIBLE, holder.phone, holder.contacts);
         } else {
-            GuiUtilities.setVisibility(View.GONE, holder.phone, holder.contacts);
+            holder.phone.setVisibility(View.GONE);
+        }
+
+        List<String> addresses = post.getAddress();
+        if (addresses.isEmpty()) {
+            holder.address.setVisibility(View.GONE);
+        } else {
+            String address = TextUtils.join("\n", addresses);
+            holder.address.setText(address);
+            GuiUtilities.setVisibility(View.VISIBLE, holder.address, holder.contacts);
         }
     }
 }
