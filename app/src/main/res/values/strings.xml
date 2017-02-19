@@ -9,4 +9,6 @@
     <string name="retry">Retry</string>
     <string name="welcome">Welcome to Captumia</string>
     <string name="welcome_text">Are you ready to capture your valuable moments?! Let\'s explore.</string>
+    <string name="search">Search</string>
+    <string name="search_edit_home_hint">What are you looking for?</string>
 </resources>
