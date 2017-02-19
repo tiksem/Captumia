@@ -41,6 +41,7 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
                 ImageView imageView = holder.image;
                 picasso.load(post.getMedia().getDisplayInListUrl()).
                         resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
+                        placeholder(R.drawable.post_image_placeholder).
                         centerCrop().
                         transform(new PostImageTransformation(imageView.getContext())).
                         into(imageView);
