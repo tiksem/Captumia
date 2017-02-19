@@ -13,4 +13,9 @@ public interface RestApiClient {
     Call<List<Post>> getPosts(@Query("job_listing_category") int categoryId,
                               @Query("page") int page,
                               @Query("per_page") int itemsPerPage);
+
+    @GET("job_listing")
+    Call<List<Post>> searchPosts(@Query("search") String search,
+                                 @Query("page") int page,
+                                 @Query("per_page") int itemsPerPage);
 }

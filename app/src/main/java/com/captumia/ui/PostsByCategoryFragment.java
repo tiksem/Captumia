@@ -11,7 +11,7 @@ import com.utilsframework.android.adapters.ViewArrayAdapter;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
-public class PostsByCategoryFragment extends BaseLazyLoadingFragment<Post> {
+public class PostsByCategoryFragment extends BasePostsFragment {
     public static final String CATEGORY_ID = "categoryId";
 
     private int categoryId;
@@ -28,29 +28,9 @@ public class PostsByCategoryFragment extends BaseLazyLoadingFragment<Post> {
     }
 
     @Override
-    protected ViewArrayAdapter<Post, ?> createAdapter() {
-        return new PostsAdapter(getContext());
-    }
-
-    @Override
     protected LazyLoadingList<Post> getLazyLoadingList(RetrofitRequestManager requestManager,
                                                        String filter) {
         return new PostsByCategoryLazyLoadingList(requestManager,
                 getRestApiClient(), categoryId);
-    }
-
-    @Override
-    protected void onListItemClicked(Post item, int position) {
-
-    }
-
-    @Override
-    protected int getRootLayout() {
-        return R.layout.posts;
-    }
-
-    @Override
-    protected int getNoInternetConnectionViewId() {
-        return R.id.no_connection;
     }
 }

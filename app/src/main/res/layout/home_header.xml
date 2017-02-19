@@ -59,9 +59,9 @@
                 android:layout_height="44dp"/>
 
             <Button
+                android:id="@+id/search_button"
                 android:text="@string/search"
                 android:layout_marginTop="10dp"
-                android:id="@+id/search_button"
                 style="@style/contrastButton"
                 android:textSize="15sp"
                 android:layout_width="match_parent"
