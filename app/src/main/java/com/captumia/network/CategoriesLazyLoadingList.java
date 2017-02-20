@@ -2,6 +2,7 @@ package com.captumia.network;
 
 import com.captumia.data.Category;
 import com.utils.framework.KeyProvider;
+import com.utils.framework.strings.Strings;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
 import java.util.List;
@@ -25,5 +26,14 @@ public class CategoriesLazyLoadingList extends BaseLazyLoadingList<Category> {
     @Override
     protected KeyProvider<Object, Category> getKeyProvider() {
         return new CategoryKeyProvider();
+    }
+
+    @Override
+    protected boolean shouldAddElement(Category element) {
+        if (Strings.isEmpty(element.getImage())) {
+            return false;
+        }
+
+        return super.shouldAddElement(element);
     }
 }
