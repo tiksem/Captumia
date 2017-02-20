@@ -12,4 +12,6 @@
     <string name="search">Search</string>
     <string name="search_edit_home_hint">What are you looking for?</string>
     <string name="no_results">Perhaps try revising your search by expanding your search radius or create a listing instead!</string>
+    <string name="home_sub_header_title">What Are You Looking For?</string>
+    <string name="home_sub_header_message"><![CDATA[Discover & connect with great service providers near you.]]></string>
 </resources>

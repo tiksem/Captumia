@@ -1,5 +1,6 @@
 package com.captumia.network;
 
+import com.captumia.data.Category;
 import com.captumia.data.Post;
 
 import java.util.List;
@@ -18,4 +19,11 @@ public interface RestApiClient {
     Call<List<Post>> searchPosts(@Query("search") String search,
                                  @Query("page") int page,
                                  @Query("per_page") int itemsPerPage);
+
+    @GET("job_listing_category?parent=0&orderby=count&per_page=6")
+    Call<List<Category>> getTopRootCategories();
+
+    @GET("job_listing_category?parent=0&orderby=count")
+    Call<List<Category>> getRootCategories(@Query("page") int page,
+                                           @Query("per_page") int itemsPerPage);
 }

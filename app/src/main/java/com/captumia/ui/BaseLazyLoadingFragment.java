@@ -5,7 +5,7 @@ import com.captumia.R;
 import com.captumia.network.AppRequestManager;
 import com.captumia.network.RestApiClient;
 import com.utilsframework.android.navdrawer.NavigationActivityInterface;
-import com.utilsframework.android.navigation.LazyLoadingListFragment;
+import com.utilsframework.android.fragments.LazyLoadingListFragment;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
 public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment<T> {
