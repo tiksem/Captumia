@@ -60,6 +60,6 @@ public class HomeFragment extends BaseLazyLoadingFragment<Category> {
 
     @Override
     protected int getRootLayout() {
-        return R.layout.home;
+        return R.layout.categories;
     }
 }
