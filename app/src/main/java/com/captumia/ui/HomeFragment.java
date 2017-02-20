@@ -17,7 +17,7 @@ import com.utilsframework.android.adapters.ViewArrayAdapter;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.listview.ListViews;
 
-public class HomeFragment extends BaseLazyLoadingFragment<Category> {
+public class HomeFragment extends CategoriesFragment {
     private EditText searchEditText;
 
     @Override
@@ -48,18 +48,8 @@ public class HomeFragment extends BaseLazyLoadingFragment<Category> {
     }
 
     @Override
-    protected ViewArrayAdapter<Category, ?> createAdapter() {
-        return new CategoryAdapter(getContext());
-    }
-
-    @Override
     protected LazyLoadingList<Category> getLazyLoadingList(RetrofitRequestManager requestManager,
                                                            String filter) {
         return new HomeLazyLoadingList(requestManager, getRestApiClient());
-    }
-
-    @Override
-    protected int getRootLayout() {
-        return R.layout.categories;
     }
 }

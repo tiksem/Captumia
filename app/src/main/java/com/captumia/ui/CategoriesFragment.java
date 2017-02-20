@@ -24,4 +24,10 @@ public class CategoriesFragment extends BaseLazyLoadingFragment<Category> {
     protected int getRootLayout() {
         return R.layout.categories;
     }
+
+    @Override
+    protected void onListItemClicked(Category item, int position) {
+        PostsByCategoryFragment fragment = PostsByCategoryFragment.create(item.getId());
+        getNavigationInterface().replaceFragment(fragment, 1);
+    }
 }
