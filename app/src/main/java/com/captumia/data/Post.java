@@ -1,5 +1,7 @@
 package com.captumia.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,7 +13,7 @@ import com.utils.framework.strings.Strings;
 import java.util.Collections;
 import java.util.List;
 
-public class Post {
+public class Post implements Parcelable {
     private int id;
     @JsonProperty("better_featured_image")
     private Media media;
@@ -89,4 +91,41 @@ public class Post {
     public List<String> getAddress() {
         return address;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeParcelable(this.media, flags);
+        dest.writeString(this.title);
+        dest.writeString(this.phone);
+        dest.writeStringList(this.address);
+    }
+
+    public Post() {
+    }
+
+    protected Post(Parcel in) {
+        this.id = in.readInt();
+        this.media = in.readParcelable(Media.class.getClassLoader());
+        this.title = in.readString();
+        this.phone = in.readString();
+        this.address = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+        @Override
+        public Post createFromParcel(Parcel source) {
+            return new Post(source);
+        }
+
+        @Override
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 }
