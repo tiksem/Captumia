@@ -9,14 +9,17 @@ import java.util.List;
 import retrofit2.Call;
 
 public class CategoriesLazyLoadingList extends BaseLazyLoadingList<Category> {
+    private int parent;
+
     public CategoriesLazyLoadingList(RetrofitRequestManager requestManager,
-                                     RestApiClient restApiClient) {
+                                     RestApiClient restApiClient, int parent) {
         super(requestManager, restApiClient);
+        this.parent = parent;
     }
 
     @Override
     protected Call<List<Category>> createLoadPageCall(int itemsPerPage) {
-        return getRestApiClient().getRootCategories(getLoadedPagesCount() + 1, itemsPerPage);
+        return getRestApiClient().getCategories(parent, getLoadedPagesCount() + 1, itemsPerPage);
     }
 
     @Override

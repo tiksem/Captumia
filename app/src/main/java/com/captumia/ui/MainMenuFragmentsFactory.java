@@ -15,7 +15,7 @@ public class MainMenuFragmentsFactory extends NoTabsFragmentFactory {
             case R.id.logo:
                 return new HomeFragment();
             case R.id.categories:
-                return new CategoriesFragment();
+                return CategoriesFragment.createWithRootCategories();
             default:
                 throw new UnsupportedOperationException("unsupported item");
         }

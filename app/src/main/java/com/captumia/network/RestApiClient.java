@@ -25,7 +25,8 @@ public interface RestApiClient {
     @GET("job_listing_category?parent=0&orderby=count&per_page=6")
     Call<List<Category>> getTopRootCategories();
 
-    @GET("job_listing_category?parent=0&orderby=count")
-    Call<List<Category>> getRootCategories(@Query("page") int page,
-                                           @Query("per_page") int itemsPerPage);
+    @GET("job_listing_category?orderby=count")
+    Call<List<Category>> getCategories(@Query("parent") int parent,
+                                       @Query("page") int page,
+                                       @Query("per_page") int itemsPerPage);
 }
