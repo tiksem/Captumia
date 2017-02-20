@@ -10,6 +10,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RestApiClient {
+    String BASE_URL = "https://www.captumia.com/wp-json/wp/v2/";
+
     @GET("job_listing")
     Call<List<Post>> getPosts(@Query("job_listing_category") int categoryId,
                               @Query("page") int page,

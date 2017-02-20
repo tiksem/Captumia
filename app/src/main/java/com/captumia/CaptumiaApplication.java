@@ -47,7 +47,7 @@ public class CaptumiaApplication extends Application {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JacksonConverterFactory factory = JacksonConverterFactory.create(objectMapper);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.captumia.com/wp-json/wp/v2/")
+                .baseUrl(RestApiClient.BASE_URL)
                 .client(client)
                 .addConverterFactory(factory)
                 .build();
