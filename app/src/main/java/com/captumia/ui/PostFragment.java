@@ -41,6 +41,13 @@ public class PostFragment extends RequestManagerFragment {
         setupHeader(view, context);
         setupPhotoGallery(view, context);
         setupDescription(view);
+
+        view.findViewById(R.id.book_now).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BookServiceActivity.start(getContext(), post.getId());
+            }
+        });
     }
 
     private void setupDescription(View view) {

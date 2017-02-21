@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.BookServiceActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/ActionBarActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>

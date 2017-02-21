@@ -80,17 +80,36 @@
                     <include layout="@layout/post_page_star"/>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/write_a_review_button"
+                <LinearLayout
                     android:layout_marginTop="20dp"
-                    style="@style/contrastButton"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/write_a_review"
-                    android:textAllCaps="false"
-                    android:background="@drawable/write_review_button"
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    >
+
+                    <Button
+                        android:id="@+id/write_a_review_button"
+                        style="@style/contrastButton"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/write_a_review"
+                        android:textAllCaps="false"
+                        android:background="@drawable/write_review_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        android:id="@+id/book_now"
+                        style="@style/contrastButton"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/book_now"
+                        android:textAllCaps="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 
