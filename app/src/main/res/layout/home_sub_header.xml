@@ -10,7 +10,7 @@
               android:layout_height="match_parent">
     <TextView
         android:gravity="center"
-        android:textColor="#454545"
+        android:textColor="@color/greyHeaderText"
         android:textSize="20sp"
         android:text="@string/home_sub_header_title"
         android:layout_width="wrap_content"

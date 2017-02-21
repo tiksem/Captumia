@@ -14,4 +14,6 @@
     <string name="no_results">Perhaps try revising your search by expanding your search radius or create a listing instead!</string>
     <string name="home_sub_header_title">What Are You Looking For?</string>
     <string name="home_sub_header_message"><![CDATA[Discover & connect with great service providers near you.]]></string>
+    <string name="write_a_review">Write a Review</string>
+    <string name="photo_gallery">Photo Gallery</string>
 </resources>

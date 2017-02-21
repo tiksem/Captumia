@@ -12,8 +12,11 @@ import com.utils.framework.strings.Strings;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Post implements Parcelable {
+    private static final Pattern GALLERY_IMAGE_PATTERN = Pattern.compile("\"([^\"]+)\"");
+
     private int id;
     @JsonProperty("better_featured_image")
     private Media media;
@@ -23,6 +26,8 @@ public class Post implements Parcelable {
     private String phone;
     @JsonIgnore
     private List<String> address;
+    @JsonIgnore
+    private List<String> photos;
 
     @JsonSetter("title")
     public void setTitleFromJson(JsonNode jsonNode) {
@@ -62,6 +67,9 @@ public class Post implements Parcelable {
         }
 
         address = Strings.stringListExcludeEmpty(addressLine1, addressLine2);
+
+        String galleryImagesString = getStringField(node, "_gallery_images");
+        photos = Strings.findAll(galleryImagesString, GALLERY_IMAGE_PATTERN);
     }
 
     public int getId() {
@@ -92,6 +100,13 @@ public class Post implements Parcelable {
         return address;
     }
 
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public Post() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,9 +119,7 @@ public class Post implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.phone);
         dest.writeStringList(this.address);
-    }
-
-    public Post() {
+        dest.writeStringList(this.photos);
     }
 
     protected Post(Parcel in) {
@@ -115,9 +128,10 @@ public class Post implements Parcelable {
         this.title = in.readString();
         this.phone = in.readString();
         this.address = in.createStringArrayList();
+        this.photos = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+    public static final Creator<Post> CREATOR = new Creator<Post>() {
         @Override
         public Post createFromParcel(Parcel source) {
             return new Post(source);

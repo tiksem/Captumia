@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#cf1e39</color>
     <color name="colorAccent">#717171</color>
     <color name="postDarkTint">#64000000</color>
-    <color name="postBottomBorder">#dedede</color>
+    <color name="border">#dedede</color>
     <color name="postShadow">#eeeeee</color>
     <color name="imagePlaceHolder">#434343</color>
+    <color name="greyHeaderText">#454545</color>
 </resources>

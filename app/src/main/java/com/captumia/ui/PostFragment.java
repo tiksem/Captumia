@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.network.AppRequestManager;
+import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
 import com.utilsframework.android.fragments.Fragments;
@@ -35,6 +37,11 @@ public class PostFragment extends RequestManagerFragment {
         Context context = getContext();
         UiUtils.fillPostImage(Picasso.with(context), holder, post,
                 new DarkenImageTransformation(context));
+
+        AbsListView photosListView = (AbsListView) view.findViewById(R.id.photo_gallery_list);
+        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(context);
+        adapter.setElements(post.getPhotos());
+        photosListView.setAdapter(adapter);
     }
 
     public static PostFragment create(Post post) {
