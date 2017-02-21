@@ -97,7 +97,9 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/descriptionContainer"
             android:padding="20dp"
+            android:paddingBottom="0dp"
             android:layout_margin="15dp"
             android:background="@drawable/rounded_border"
             android:layout_width="match_parent"

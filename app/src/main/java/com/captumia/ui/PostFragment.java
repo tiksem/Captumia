@@ -17,6 +17,7 @@ import com.captumia.network.AppRequestManager;
 import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
+import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.fragments.RequestManagerFragment;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
@@ -35,20 +36,40 @@ public class PostFragment extends RequestManagerFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Context context = getContext();
+
+        setupHeader(view, context);
+        setupPhotoGallery(view, context);
+        setupDescription(view);
+    }
+
+    private void setupDescription(View view) {
+        TextView descriptionView = (TextView) view.findViewById(R.id.description);
+        View descriptionContainer = view.findViewById(R.id.descriptionContainer);
+        String description = post.getDescription();
+        if (Strings.isEmpty(description)) {
+            descriptionContainer.setVisibility(View.GONE);
+        } else {
+            //description = Strings.removeFromStart(description, "<p>");
+            description = Strings.removeFromEnd(description, "\n");
+            descriptionContainer.setVisibility(View.VISIBLE);
+            Spanned descriptionHtml = Html.fromHtml(description);
+            descriptionView.setText(descriptionHtml);
+        }
+    }
+
+    private void setupHeader(View view, Context context) {
         PostViewHolder holder = new PostViewHolder(view);
         UiUtils.fillPostExcludingImage(holder, post);
-        Context context = getContext();
         UiUtils.fillPostImage(Picasso.with(context), holder, post,
                 new DarkenImageTransformation(context));
+    }
 
+    private void setupPhotoGallery(View view, Context context) {
         AbsListView photosListView = (AbsListView) view.findViewById(R.id.photo_gallery_list);
         PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(context);
         adapter.setElements(post.getPhotos());
         photosListView.setAdapter(adapter);
-
-        TextView descriptionView = (TextView) view.findViewById(R.id.description);
-        Spanned description = Html.fromHtml(post.getDescription());
-        descriptionView.setText(description);
     }
 
     public static PostFragment create(Post post) {
