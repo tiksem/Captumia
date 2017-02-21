@@ -28,6 +28,8 @@ public class Post implements Parcelable {
     private List<String> address;
     @JsonIgnore
     private List<String> photos;
+    @JsonIgnore
+    private String description;
 
     @JsonSetter("title")
     public void setTitleFromJson(JsonNode jsonNode) {
@@ -72,6 +74,14 @@ public class Post implements Parcelable {
         photos = Strings.findAll(galleryImagesString, GALLERY_IMAGE_PATTERN);
     }
 
+    @JsonSetter("content")
+    public void setDescriptionFromJson(JsonNode node) {
+        JsonNode rendered = node.get("rendered");
+        if (rendered != null && rendered.isTextual()) {
+            description = rendered.asText();
+        }
+    }
+
     public int getId() {
         return id;
     }
@@ -104,6 +114,10 @@ public class Post implements Parcelable {
         return photos;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Post() {
     }
 
@@ -120,6 +134,7 @@ public class Post implements Parcelable {
         dest.writeString(this.phone);
         dest.writeStringList(this.address);
         dest.writeStringList(this.photos);
+        dest.writeString(this.description);
     }
 
     protected Post(Parcel in) {
@@ -129,6 +144,7 @@ public class Post implements Parcelable {
         this.phone = in.readString();
         this.address = in.createStringArrayList();
         this.photos = in.createStringArrayList();
+        this.description = in.readString();
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {

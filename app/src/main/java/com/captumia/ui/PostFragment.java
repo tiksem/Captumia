@@ -3,10 +3,13 @@ package com.captumia.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.TextView;
 
 import com.captumia.R;
 import com.captumia.data.Post;
@@ -42,6 +45,10 @@ public class PostFragment extends RequestManagerFragment {
         PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(context);
         adapter.setElements(post.getPhotos());
         photosListView.setAdapter(adapter);
+
+        TextView descriptionView = (TextView) view.findViewById(R.id.description);
+        Spanned description = Html.fromHtml(post.getDescription());
+        descriptionView.setText(description);
     }
 
     public static PostFragment create(Post post) {
