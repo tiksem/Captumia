@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:padding="20dp"
+        android:layout_gravity="top"
+        android:src="@drawable/logo"
+        android:scaleType="centerInside"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout android:orientation="vertical"
+                  android:layout_gravity="bottom"
+                  android:padding="20dp"
+                  android:layout_marginBottom="80dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/greyHeaderText"
+            android:textSize="22sp"
+            android:text="@string/login_title"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/login_edit_text"
+            android:hint="@string/username_hint"
+            android:background="@drawable/rounded_border"
+            style="@style/whiteEditText"/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/password_edit_text"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_border"
+            style="@style/whiteEditText"/>
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:id="@+id/login_button"
+            android:text="@string/login"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            style="@style/contrastButton"/>
+    </LinearLayout>
+</FrameLayout>

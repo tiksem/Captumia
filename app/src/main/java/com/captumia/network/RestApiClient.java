@@ -1,6 +1,7 @@
 package com.captumia.network;
 
 import com.captumia.data.Category;
+import com.captumia.data.LoginResult;
 import com.captumia.data.Post;
 
 import java.util.List;
@@ -10,23 +11,28 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RestApiClient {
-    String BASE_URL = "https://www.captumia.com/wp-json/wp/v2/";
+    String BASE_URL = "https://www.captumia.com/wp-json/";
 
-    @GET("job_listing")
+    @GET("wp/v2/job_listing")
     Call<List<Post>> getPosts(@Query("job_listing_category") int categoryId,
                               @Query("page") int page,
                               @Query("per_page") int itemsPerPage);
 
-    @GET("job_listing")
+    @GET("wp/v2/job_listing")
     Call<List<Post>> searchPosts(@Query("search") String search,
                                  @Query("page") int page,
                                  @Query("per_page") int itemsPerPage);
 
-    @GET("job_listing_category?parent=0&orderby=count&per_page=6")
+    @GET("wp/v2/job_listing_category?parent=0&orderby=count&per_page=6")
     Call<List<Category>> getTopRootCategories();
 
-    @GET("job_listing_category?orderby=count")
+    @GET("wp/v2/job_listing_category?orderby=count")
     Call<List<Category>> getCategories(@Query("parent") int parent,
                                        @Query("page") int page,
                                        @Query("per_page") int itemsPerPage);
+
+    @GET("/jwt-auth/v1/token")
+    Call<LoginResult> login(@Query("parent") int parent,
+                               @Query("page") int page,
+                               @Query("per_page") int itemsPerPage);
 }

@@ -17,4 +17,9 @@
     <string name="write_a_review">Write a Review</string>
     <string name="photo_gallery">Photo Gallery</string>
     <string name="book_now">Book Now</string>
+    <string name="login">Log In</string>
+    <string name="sign_up">Sign up</string>
+    <string name="username_hint">Username or email address</string>
+    <string name="password_hint">Password</string>
+    <string name="login_title">Welcome Back!</string>
 </resources>
