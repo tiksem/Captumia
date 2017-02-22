@@ -31,7 +31,7 @@ public class PhotoGalleryAdapter extends ViewArrayAdapter<String, ImageView> {
 
     @Override
     protected void reuseView(final String url, final ImageView imageView, int position, View view) {
-        GuiUtilities.executeWhenViewMeasured(imageView, new Runnable() {
+        GuiUtilities.executeWhenViewMeasuredUsingLoop(imageView, new Runnable() {
             @Override
             public void run() {
                 picasso.load(url).placeholder(R.drawable.photo_gallery_placeholder)

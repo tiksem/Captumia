@@ -41,7 +41,7 @@ public class UiUtils {
                                      final PostViewHolder holder,
                                      final Post post,
                                      final Transformation transformation) {
-        GuiUtilities.executeWhenViewMeasured(holder.image, new Runnable() {
+        GuiUtilities.executeWhenViewMeasuredUsingLoop(holder.image, new Runnable() {
             @Override
             public void run() {
                 ImageView imageView = holder.image;

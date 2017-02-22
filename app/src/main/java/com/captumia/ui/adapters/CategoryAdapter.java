@@ -36,7 +36,7 @@ public class CategoryAdapter extends LazyLoadingListAdapter<Category, CategoryVi
                              int position, View view) {
         holder.name.setText(category.getName());
 
-        GuiUtilities.executeWhenViewMeasured(holder.image, new Runnable() {
+        GuiUtilities.executeWhenViewMeasuredUsingLoop(holder.image, new Runnable() {
             @Override
             public void run() {
                 ImageView imageView = holder.image;

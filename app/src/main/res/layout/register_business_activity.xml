@@ -41,6 +41,7 @@
                 android:layout_weight="1"
                 android:id="@+id/first_name"
                 android:hint="@string/first_name_hint"
+                android:nextFocusDown="@+id/last_name"
                 style="@style/loginFromEditText"/>
 
             <EditText
@@ -48,6 +49,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
                 android:id="@+id/last_name"
+                android:nextFocusDown="@+id/login"
                 android:hint="@string/last_name_hint"
                 style="@style/loginFromEditText"/>
         </LinearLayout>
@@ -56,6 +58,7 @@
             android:layout_marginTop="@dimen/register_distance_between_fields"
             android:id="@+id/login"
             android:hint="@string/register_login_hint"
+            android:nextFocusDown="@+id/email"
             style="@style/loginFromEditText"/>
 
         <LinearLayout
@@ -69,6 +72,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:id="@+id/email"
+                android:nextFocusDown="@+id/confirm_email"
                 android:inputType="textEmailAddress"
                 android:hint="@string/email_hint"
                 style="@style/loginFromEditText"/>
@@ -77,6 +81,7 @@
                 android:layout_marginTop="@dimen/register_distance_between_fields"
                 android:layout_weight="1"
                 android:layout_marginLeft="5dp"
+                android:nextFocusDown="@+id/vendor"
                 android:id="@+id/confirm_email"
                 android:inputType="textEmailAddress"
                 android:hint="@string/confirm_email_hint"
@@ -86,6 +91,7 @@
         <EditText
             android:layout_marginTop="@dimen/register_distance_between_fields"
             android:id="@+id/vendor"
+            android:nextFocusDown="@+id/description"
             android:hint="@string/vendor_hint"
             style="@style/loginFromEditText"/>
 
@@ -112,6 +118,7 @@
         <EditText
             android:singleLine="false"
             android:lines="4"
+            android:gravity="top|left"
             android:layout_height="wrap_content"
             android:id="@+id/company_description"
             style="@style/loginFromEditText"/>

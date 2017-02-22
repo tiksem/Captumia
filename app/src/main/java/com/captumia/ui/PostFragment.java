@@ -48,6 +48,18 @@ public class PostFragment extends RequestManagerFragment {
                 BookServiceActivity.start(getContext(), post.getId());
             }
         });
+
+        view.findViewById(R.id.write_a_review_button).setOnClickListener(
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onWriteReviewTap();
+            }
+        });
+    }
+
+    private void onWriteReviewTap() {
+        WriteReviewActivity.start(getContext());
     }
 
     private void setupDescription(View view) {

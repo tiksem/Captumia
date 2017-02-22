@@ -34,4 +34,11 @@
     <string name="register_sub_title">Submit the form below to become a vendor on this store.</string>
     <string name="business_registration">Business Registration</string>
     <string name="register">Register</string>
+    <string name="write_a_review_header"><![CDATA[Rate & Write a Review]]></string>
+    <string name="comment">Comment</string>
+    <string name="speed">Speed</string>
+    <string name="quality">Quality</string>
+    <string name="friendly">Friendly</string>
+    <string name="price">Price</string>
+    <string name="submit_review">Submit Your Review</string>
 </resources>

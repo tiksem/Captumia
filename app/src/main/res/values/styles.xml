@@ -40,4 +40,11 @@
     <style name="loginFromEditText" parent="whiteEditText">
         <item name="android:background">@drawable/rounded_border</item>
     </style>
+
+    <style name="writeReviewRatingText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/greyText</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
 </resources>

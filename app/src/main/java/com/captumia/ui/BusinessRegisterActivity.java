@@ -10,7 +10,7 @@ public class BusinessRegisterActivity extends RequestManagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_activity);
+        setContentView(R.layout.register_business_activity);
     }
 
     public static void start(Context context) {
