@@ -3,6 +3,7 @@ package com.captumia.network;
 import com.captumia.data.Category;
 import com.captumia.data.LoginResult;
 import com.captumia.data.Post;
+import com.captumia.data.Tag;
 
 import java.util.List;
 
@@ -14,9 +15,14 @@ public interface RestApiClient {
     String BASE_URL = "https://www.captumia.com/wp-json/";
 
     @GET("wp/v2/job_listing")
-    Call<List<Post>> getPosts(@Query("job_listing_category") int categoryId,
-                              @Query("page") int page,
-                              @Query("per_page") int itemsPerPage);
+    Call<List<Post>> getPostsByCategory(@Query("job_listing_category") int categoryId,
+                                        @Query("page") int page,
+                                        @Query("per_page") int itemsPerPage);
+
+    @GET("wp/v2/job_listing")
+    Call<List<Post>> getPostsByTag(@Query("job_listing_tag") int tagId,
+                                   @Query("page") int page,
+                                   @Query("per_page") int itemsPerPage);
 
     @GET("wp/v2/job_listing")
     Call<List<Post>> searchPosts(@Query("search") String search,
@@ -33,6 +39,9 @@ public interface RestApiClient {
 
     @GET("/jwt-auth/v1/token")
     Call<LoginResult> login(@Query("parent") int parent,
-                               @Query("page") int page,
-                               @Query("per_page") int itemsPerPage);
+                            @Query("page") int page,
+                            @Query("per_page") int itemsPerPage);
+
+    @GET("wp/v2/job_listing_tag?per_page=30")
+    Call<List<Tag>> getTopTags();
 }

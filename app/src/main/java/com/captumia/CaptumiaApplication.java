@@ -26,7 +26,7 @@ public class CaptumiaApplication extends Application {
     private void initRestApiClient() {
         Retrofit.Builder builder = RetrofitTemplates.generateRetrofitWithJackson(
                 RestApiClient.BASE_URL);
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         okHttpBaseAuthHandler = new OkHttpBaseAuthHandler(clientBuilder, this);
         Retrofit retrofit = builder.client(
                 clientBuilder.build()).build();

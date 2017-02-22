@@ -18,6 +18,6 @@ public class PostsByCategoryLazyLoadingList extends BasePostsLazyLoadingList {
 
     @Override
     protected Call<List<Post>> createLoadPageCall(int itemsPerPage) {
-        return getRestApiClient().getPosts(categoryId, getLoadedPagesCount() + 1, itemsPerPage);
+        return getRestApiClient().getPostsByCategory(categoryId, getLoadedPagesCount() + 1, itemsPerPage);
     }
 }

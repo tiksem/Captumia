@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.captumia.R;
 import com.captumia.data.Post;
+import com.captumia.data.Tag;
 import com.captumia.network.AppRequestManager;
 import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
@@ -20,7 +21,10 @@ import com.squareup.picasso.Picasso;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.fragments.RequestManagerFragment;
+import com.utilsframework.android.navdrawer.NavigationActivityInterface;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
+
+import java.util.List;
 
 public class PostFragment extends RequestManagerFragment {
     public static final String POST = "post";
@@ -51,11 +55,40 @@ public class PostFragment extends RequestManagerFragment {
 
         view.findViewById(R.id.write_a_review_button).setOnClickListener(
                 new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onWriteReviewTap();
+                    @Override
+                    public void onClick(View v) {
+                        onWriteReviewTap();
+                    }
+                });
+
+        setupTags(view);
+    }
+
+    private void setupTags(View view) {
+        ViewGroup tagsView = (ViewGroup) view.findViewById(R.id.tags);
+        List<Tag> tags = post.getTags();
+        if (tags.isEmpty()) {
+            tagsView.setVisibility(View.GONE);
+        } else {
+            tagsView.setVisibility(View.VISIBLE);
+            for (final Tag tag : tags) {
+                View tagView = createTagView(tag);
+                tagView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PostsByTagFragment fragment = PostsByTagFragment.create(tag.getId());
+                        getNavigationInterface().replaceFragment(fragment, 1);
+                    }
+                });
+                tagsView.addView(tagView);
             }
-        });
+        }
+    }
+
+    private View createTagView(Tag tag) {
+        TextView tagView = (TextView) View.inflate(getContext(), R.layout.tag, null);
+        tagView.setText(tag.getName());
+        return tagView;
     }
 
     private void onWriteReviewTap() {
@@ -69,7 +102,6 @@ public class PostFragment extends RequestManagerFragment {
         if (Strings.isEmpty(description)) {
             descriptionContainer.setVisibility(View.GONE);
         } else {
-            //description = Strings.removeFromStart(description, "<p>");
             description = Strings.removeFromEnd(description, "\n");
             descriptionContainer.setVisibility(View.VISIBLE);
             Spanned descriptionHtml = Html.fromHtml(description);
@@ -104,5 +136,9 @@ public class PostFragment extends RequestManagerFragment {
     @Override
     protected RetrofitRequestManager obtainRequestManager() {
         return new AppRequestManager();
+    }
+
+    public NavigationActivityInterface getNavigationInterface() {
+        return (NavigationActivityInterface) getActivity();
     }
 }

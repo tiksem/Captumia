@@ -1,6 +1,7 @@
 package com.captumia.ui;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.captumia.R;
 import com.captumia.data.Post;
@@ -22,8 +23,8 @@ public class PostsByCategoryFragment extends BasePostsFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         categoryId = getArguments().getInt(CATEGORY_ID);
     }
 

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.utils.framework.strings.Strings;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -30,6 +31,7 @@ public class Post implements Parcelable {
     private List<String> photos;
     @JsonIgnore
     private String description;
+    private List<Tag> tags;
 
     @JsonSetter("title")
     public void setTitleFromJson(JsonNode jsonNode) {
@@ -118,6 +120,14 @@ public class Post implements Parcelable {
         return description;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     public Post() {
     }
 
@@ -135,6 +145,7 @@ public class Post implements Parcelable {
         dest.writeStringList(this.address);
         dest.writeStringList(this.photos);
         dest.writeString(this.description);
+        dest.writeList(this.tags);
     }
 
     protected Post(Parcel in) {
@@ -145,6 +156,8 @@ public class Post implements Parcelable {
         this.address = in.createStringArrayList();
         this.photos = in.createStringArrayList();
         this.description = in.readString();
+        this.tags = new ArrayList<Tag>();
+        in.readList(this.tags, Tag.class.getClassLoader());
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
