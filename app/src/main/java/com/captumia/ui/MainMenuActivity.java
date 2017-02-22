@@ -3,7 +3,6 @@ package com.captumia.ui;
 import android.os.Bundle;
 import android.view.View;
 
-import com.captumia.CaptumiaApplication;
 import com.captumia.R;
 import com.utilsframework.android.navdrawer.FragmentFactory;
 
@@ -31,7 +30,7 @@ public class MainMenuActivity extends BaseMenuActivity {
     }
 
     private void onSignUpClicked() {
-
+        BusinessRegisterActivity.start(this);
     }
 
     private void onLoginClicked() {

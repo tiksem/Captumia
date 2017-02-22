@@ -34,16 +34,14 @@
             android:layout_marginTop="10dp"
             android:id="@+id/login_edit_text"
             android:hint="@string/username_hint"
-            android:background="@drawable/rounded_border"
-            style="@style/whiteEditText"/>
+            style="@style/loginFromEditText"/>
 
         <EditText
             android:layout_marginTop="10dp"
             android:id="@+id/password_edit_text"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
-            android:background="@drawable/rounded_border"
-            style="@style/whiteEditText"/>
+            style="@style/loginFromEditText"/>
 
         <Button
             android:layout_marginTop="10dp"

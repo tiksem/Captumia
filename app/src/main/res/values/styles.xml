@@ -36,4 +36,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">44dp</item>
     </style>
+
+    <style name="loginFromEditText" parent="whiteEditText">
+        <item name="android:background">@drawable/rounded_border</item>
+    </style>
 </resources>

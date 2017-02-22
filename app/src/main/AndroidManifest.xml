@@ -33,6 +33,13 @@
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
+
+        <activity android:name=".ui.BusinessRegisterActivity"
+                  android:label="@string/business_registration"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/ActionBarActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout android:orientation="vertical"
+                  android:padding="20dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/greyHeaderText"
+            android:textSize="22sp"
+            android:text="@string/register_title"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@color/greyText"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/register_sub_title"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:layout_marginTop="@dimen/register_distance_between_fields"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:id="@+id/first_name"
+                android:hint="@string/first_name_hint"
+                style="@style/loginFromEditText"/>
+
+            <EditText
+                android:layout_marginTop="@dimen/register_distance_between_fields"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/last_name"
+                android:hint="@string/last_name_hint"
+                style="@style/loginFromEditText"/>
+        </LinearLayout>
+
+        <EditText
+            android:layout_marginTop="@dimen/register_distance_between_fields"
+            android:id="@+id/login"
+            android:hint="@string/register_login_hint"
+            style="@style/loginFromEditText"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:layout_marginTop="@dimen/register_distance_between_fields"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:id="@+id/email"
+                android:inputType="textEmailAddress"
+                android:hint="@string/email_hint"
+                style="@style/loginFromEditText"/>
+
+            <EditText
+                android:layout_marginTop="@dimen/register_distance_between_fields"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/confirm_email"
+                android:inputType="textEmailAddress"
+                android:hint="@string/confirm_email_hint"
+                style="@style/loginFromEditText"/>
+        </LinearLayout>
+
+        <EditText
+            android:layout_marginTop="@dimen/register_distance_between_fields"
+            android:id="@+id/vendor"
+            android:hint="@string/vendor_hint"
+            style="@style/loginFromEditText"/>
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:textColor="@color/greyText"
+            android:text="@string/vendor_warning"
+            android:textSize="14sp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="2dp"
+            android:paddingLeft="2dp"
+            android:textColor="@color/greyText"
+            android:text="@string/vendor_description_edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="false"
+            android:lines="4"
+            android:layout_height="wrap_content"
+            android:id="@+id/company_description"
+            style="@style/loginFromEditText"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:id="@+id/login_button"
+            android:text="@string/register"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            style="@style/contrastButton"/>
+    </LinearLayout>
+</ScrollView>
