@@ -41,4 +41,12 @@
     <string name="friendly">Friendly</string>
     <string name="price">Price</string>
     <string name="submit_review">Submit Your Review</string>
+    <string name="service_name_hint">Service Name</string>
+    <string name="location_hint">Location (optional)</string>
+    <string name="select_region">Select Region</string>
+    <string name="contact_email_hint">Contact Email</string>
+    <string name="select_service_category">Select Service Category</string>
+    <string name="service_tags">Service Tags (optional)</string>
+    <string name="add_tags_description">Add tags such as available amenities</string>
+    <string name="add_service">Add New Service</string>
 </resources>

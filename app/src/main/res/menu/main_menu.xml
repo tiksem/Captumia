@@ -5,6 +5,7 @@
             android:title="@string/services_menu_header_title"
             android:id="@+id/categories"/>
     </group>
-
-
+    <item
+        android:title="@string/add_service"
+        android:id="@+id/add_service"/>
 </menu>

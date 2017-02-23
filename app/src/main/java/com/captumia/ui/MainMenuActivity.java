@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.captumia.R;
 import com.utilsframework.android.navdrawer.FragmentFactory;
+import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
 
 public class MainMenuActivity extends BaseMenuActivity {
     @Override
@@ -55,5 +56,10 @@ public class MainMenuActivity extends BaseMenuActivity {
     @Override
     protected int getRootLayoutId() {
         return R.layout.main_menu_activity;
+    }
+
+    @Override
+    protected NavigationViewMenuAdapter createNavigationViewMenuAdapter(int navigationViewId) {
+        return new MainMenuAdapter(this, navigationViewId, getMenuId());
     }
 }

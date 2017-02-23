@@ -3,6 +3,7 @@ package com.captumia.network;
 import com.captumia.data.Category;
 import com.captumia.data.LoginResult;
 import com.captumia.data.Post;
+import com.captumia.data.Region;
 import com.captumia.data.Tag;
 
 import java.util.List;
@@ -42,6 +43,12 @@ public interface RestApiClient {
                             @Query("page") int page,
                             @Query("per_page") int itemsPerPage);
 
-    @GET("wp/v2/job_listing_tag?per_page=30")
-    Call<List<Tag>> getTopTags();
+    @GET("wp/v2/job_listing_tag?per_page=50")
+    Call<List<Tag>> getTags();
+
+    @GET("wp/v2/job_listing_region?per_page=50")
+    Call<List<Region>> getRegions();
+
+    @GET("wp/v2/job_listing_category?orderby=count&per_page=50")
+    Call<List<Category>> getCategories();
 }

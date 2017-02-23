@@ -4,6 +4,7 @@ public class Category {
     private int id;
     private String name;
     private String image;
+    private int parent;
 
     public String getName() {
         return name;
@@ -27,5 +28,13 @@ public class Category {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getParent() {
+        return parent;
+    }
+
+    public void setParent(int parent) {
+        this.parent = parent;
     }
 }

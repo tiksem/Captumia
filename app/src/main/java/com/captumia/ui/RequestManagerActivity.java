@@ -5,8 +5,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.captumia.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.network.AppRequestManager;
+import com.captumia.network.RestApiClient;
 
 public class RequestManagerActivity extends AppCompatActivity {
     private AppRequestManager requestManager;
@@ -49,5 +51,13 @@ public class RequestManagerActivity extends AppCompatActivity {
     public void finish() {
         doCleanup();
         super.finish();
+    }
+
+    public AppRequestManager getRequestManager() {
+        return requestManager;
+    }
+
+    public RestApiClient getRestApiClient() {
+        return CaptumiaApplication.getInstance().getRestApiClient();
     }
 }

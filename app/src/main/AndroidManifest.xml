@@ -47,6 +47,13 @@
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
+
+        <activity android:name=".ui.AddPostActivity"
+                  android:label="@string/add_service"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/ActionBarActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>
