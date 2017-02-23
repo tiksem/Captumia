@@ -8,6 +8,7 @@ import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Transformation;
 import com.utilsframework.android.view.GuiUtilities;
 
@@ -41,23 +42,21 @@ public class UiUtils {
                                      final PostViewHolder holder,
                                      final Post post,
                                      final Transformation transformation) {
-        GuiUtilities.executeWhenViewMeasuredUsingLoop(holder.image, new Runnable() {
+        loadImageWithCenterCrop(picasso.load(post.getMedia().getDisplayInListUrl()).
+                transform(transformation).placeholder(R.drawable.post_image_placeholder),
+                holder.image);
+    }
+
+    public static void loadImageWithCenterCrop(final RequestCreator picassoRequestCreator,
+                                               final ImageView imageView) {
+        GuiUtilities.executeWhenViewMeasuredUsingLoop(imageView, new Runnable() {
             @Override
             public void run() {
-                ImageView imageView = holder.image;
-                picasso.load(post.getMedia().getDisplayInListUrl()).
-                        resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
-                        placeholder(R.drawable.post_image_placeholder).
-                        centerCrop().
-                        transform(transformation).
+                        picassoRequestCreator.
+                                resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
+                                centerCrop().
                         into(imageView);
             }
         });
-    }
-
-    public static void fillPostImage(final PostViewHolder holder,
-                                     final Post post,
-                                     final Transformation transformation) {
-        fillPostImage(Picasso.with(holder.image.getContext()), holder, post, transformation);
     }
 }

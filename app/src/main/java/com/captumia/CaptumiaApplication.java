@@ -1,8 +1,11 @@
 package com.captumia;
 
 import android.app.Application;
+import android.net.Uri;
+import android.util.Log;
 
 import com.captumia.network.RestApiClient;
+import com.squareup.picasso.Picasso;
 import com.utilsframework.android.network.retrofit.OkHttpBaseAuthHandler;
 import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
@@ -32,6 +35,15 @@ public class CaptumiaApplication extends Application {
                 clientBuilder.build()).build();
 
         restApiClient = retrofit.create(RestApiClient.class);
+
+        Picasso.Builder picassoBuilder = new Picasso.Builder(this);
+        picassoBuilder.listener(new Picasso.Listener() {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                Log.i(Picasso.class.getSimpleName(), "loading image " + uri + " failed", exception);
+            }
+        });
+        Picasso.setSingletonInstance(picassoBuilder.build());
     }
 
     public OkHttpBaseAuthHandler getOkHttpBaseAuthHandler() {
