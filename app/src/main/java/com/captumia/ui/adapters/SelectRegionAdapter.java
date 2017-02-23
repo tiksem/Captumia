@@ -12,7 +12,7 @@ import com.utilsframework.android.adapters.SpinnerAdapter;
 /**
  * Created by stikhonenko on 2/23/17.
  */
-public class SelectRegionAdapter extends SpinnerAdapter<Region> {
+public class SelectRegionAdapter extends BaseSpinnerAdapter<Region> {
     public SelectRegionAdapter(Context context) {
         super(context);
     }

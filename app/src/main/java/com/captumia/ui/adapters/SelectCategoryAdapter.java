@@ -11,9 +11,7 @@ import com.utilsframework.android.adapters.SpinnerAdapter;
 import com.utilsframework.android.view.GuiUtilities;
 import com.utilsframework.android.view.MeasureUtils;
 
-public class SelectCategoryAdapter extends SpinnerAdapter<Category> {
-    public static final int SUB_CATEGORY_PADDING = 30;
-
+public class SelectCategoryAdapter extends BaseSpinnerAdapter<Category> {
     public SelectCategoryAdapter(Context context) {
         super(context);
     }
