@@ -150,7 +150,7 @@
             <TextView
                 android:textSize="17sp"
                 android:paddingBottom="10dp"
-                android:textColor="@color/greyHeaderText"
+                android:textColor="@color/darkGreyText"
                 android:text="@string/photo_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

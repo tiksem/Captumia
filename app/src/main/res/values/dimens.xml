@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="register_distance_between_fields">10dp</dimen>
+    <dimen name="add_post_operating_hours">10dp</dimen>
 </resources>

@@ -17,6 +17,6 @@ public abstract class BaseSpinnerAdapter<T> extends SpinnerAdapter<T> {
 
     @Override
     public int getTextColor() {
-        return R.color.greyHeaderText;
+        return R.color.darkGreyText;
     }
 }

@@ -10,7 +10,7 @@
                   android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="@color/greyHeaderText"
+            android:textColor="@color/darkGreyText"
             android:textSize="22sp"
             android:text="@string/register_title"
             android:layout_gravity="center"

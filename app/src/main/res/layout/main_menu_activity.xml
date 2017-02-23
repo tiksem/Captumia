@@ -42,7 +42,7 @@
             <TextView
                 android:id="@+id/login"
                 android:layout_weight="1"
-                android:textColor="@color/greyHeaderText"
+                android:textColor="@color/darkGreyText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -51,7 +51,7 @@
             <TextView
                 android:id="@+id/signup"
                 android:layout_weight="1"
-                android:textColor="@color/greyHeaderText"
+                android:textColor="@color/darkGreyText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

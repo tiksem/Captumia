@@ -49,4 +49,16 @@
     <string name="service_tags">Service Tags (optional)</string>
     <string name="add_tags_description">Add tags such as available amenities</string>
     <string name="add_service">Add New Service</string>
+    <string name="hours_of_operation">Hours of Operation (optional)</string>
+    <string name="saturday">Saturday</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="cover_image">Select Cover Image (optional)</string>
+    <string name="closed">Closed</string>
 </resources>

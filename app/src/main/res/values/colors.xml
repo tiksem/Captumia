@@ -7,6 +7,7 @@
     <color name="border">#dedede</color>
     <color name="postShadow">#eeeeee</color>
     <color name="imagePlaceHolder">#434343</color>
-    <color name="greyHeaderText">#454545</color>
+    <color name="darkGreyText">#454545</color>
     <color name="greyText">#686868</color>
+    <color name="white">#fff</color>
 </resources>
