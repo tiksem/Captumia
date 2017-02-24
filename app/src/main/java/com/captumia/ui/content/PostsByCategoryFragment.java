@@ -1,14 +1,11 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.network.PostsByCategoryLazyLoadingList;
-import com.captumia.ui.adapters.PostsAdapter;
+import com.captumia.ui.BasePostsFragment;
 import com.utils.framework.collections.LazyLoadingList;
-import com.utilsframework.android.adapters.ViewArrayAdapter;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 

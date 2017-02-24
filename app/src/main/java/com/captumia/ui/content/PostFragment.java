@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,8 +15,12 @@ import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
 import com.captumia.network.AppRequestManager;
+import com.captumia.ui.forms.BookServiceActivity;
+import com.captumia.ui.UiUtils;
+import com.captumia.ui.forms.WriteReviewActivity;
 import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
+import com.captumia.ui.imgtransform.DarkenImageTransformation;
 import com.squareup.picasso.Picasso;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;

@@ -3,6 +3,7 @@ package com.captumia.ui;
 import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.ui.adapters.PostsAdapter;
+import com.captumia.ui.content.PostFragment;
 import com.utilsframework.android.adapters.ViewArrayAdapter;
 
 public abstract class BasePostsFragment extends BaseLazyLoadingFragment<Post> {

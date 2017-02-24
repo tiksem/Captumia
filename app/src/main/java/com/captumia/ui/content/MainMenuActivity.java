@@ -1,9 +1,13 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.captumia.R;
+import com.captumia.ui.BaseMenuActivity;
+import com.captumia.ui.forms.BusinessRegisterActivity;
+import com.captumia.ui.forms.LoginActivity;
+import com.captumia.ui.MainMenuFragmentsFactory;
 import com.utilsframework.android.navdrawer.FragmentFactory;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
 

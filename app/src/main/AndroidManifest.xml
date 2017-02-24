@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:name=".CaptumiaApplication"
         android:theme="@style/AppTheme" >
-        <activity android:name=".ui.MainMenuActivity"
+        <activity android:name=".ui.content.MainMenuActivity"
                   android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -21,34 +21,34 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.BookServiceActivity"
+        <activity android:name=".ui.forms.BookServiceActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
 
-        <activity android:name=".ui.LoginActivity"
+        <activity android:name=".ui.forms.LoginActivity"
                   android:label="@string/login"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
 
-        <activity android:name=".ui.BusinessRegisterActivity"
+        <activity android:name=".ui.forms.BusinessRegisterActivity"
                   android:label="@string/business_registration"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
 
-        <activity android:name=".ui.WriteReviewActivity"
+        <activity android:name=".ui.forms.WriteReviewActivity"
                   android:label="@string/write_a_review"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
 
-        <activity android:name=".ui.AddPostActivity"
+        <activity android:name=".ui.forms.AddPostActivity"
                   android:label="@string/add_service"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"

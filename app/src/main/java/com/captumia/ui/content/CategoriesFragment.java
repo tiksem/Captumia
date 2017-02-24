@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.captumia.R;
 import com.captumia.data.Category;
 import com.captumia.network.CategoriesLazyLoadingList;
+import com.captumia.ui.BaseLazyLoadingFragment;
 import com.captumia.ui.adapters.CategoryAdapter;
 import com.utils.framework.collections.LazyLoadingList;
 import com.utilsframework.android.adapters.ViewArrayAdapter;

@@ -11,10 +11,10 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.utilsframework.android.adapters.ViewArrayAdapter;
 
-public class PhotoGalleryAdapter extends ViewArrayAdapter<String, ImageView> {
+public class AddPostPhotoGalleryAdapter extends ViewArrayAdapter<String, ImageView> {
     private final Picasso picasso;
 
-    public PhotoGalleryAdapter(Context context) {
+    public AddPostPhotoGalleryAdapter(Context context) {
         super(context);
         picasso = Picasso.with(context);
     }

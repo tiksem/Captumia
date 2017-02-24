@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

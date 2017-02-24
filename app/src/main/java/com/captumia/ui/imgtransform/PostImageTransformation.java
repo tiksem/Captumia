@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.imgtransform;
 
 import android.content.Context;
 import android.graphics.Canvas;

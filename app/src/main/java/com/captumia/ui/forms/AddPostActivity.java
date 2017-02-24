@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.forms;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import com.captumia.R;
 import com.captumia.data.Category;
 import com.captumia.data.Region;
 import com.captumia.data.Tag;
+import com.captumia.ui.PageLoadingActivity;
+import com.captumia.ui.UiUtils;
 import com.captumia.ui.adapters.OperatingHoursAdapter;
 import com.captumia.ui.adapters.SelectCategoryAdapter;
 import com.captumia.ui.adapters.SelectRegionAdapter;

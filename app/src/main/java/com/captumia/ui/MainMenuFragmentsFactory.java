@@ -3,10 +3,9 @@ package com.captumia.ui;
 import android.support.v4.app.Fragment;
 
 import com.captumia.R;
+import com.captumia.ui.content.CategoriesFragment;
+import com.captumia.ui.content.HomeFragment;
 import com.utilsframework.android.navdrawer.NoTabsFragmentFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainMenuFragmentsFactory extends NoTabsFragmentFactory {
     @Override

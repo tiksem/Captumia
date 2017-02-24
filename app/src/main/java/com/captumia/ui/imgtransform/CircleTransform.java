@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.imgtransform;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

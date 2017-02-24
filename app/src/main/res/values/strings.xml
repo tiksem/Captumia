@@ -62,4 +62,5 @@
     <string name="cover_image">Select Cover Image (optional)</string>
     <string name="closed">Closed</string>
     <string name="image_pick_failed">Unable to select image</string>
+    <string name="add_post_gallery_title">Gallery Images (optional)</string>
 </resources>

@@ -6,8 +6,7 @@ import android.widget.ImageView;
 
 import com.captumia.R;
 import com.captumia.data.Category;
-import com.captumia.ui.PostImageTransformation;
-import com.captumia.ui.RoundedCornersImageTransformation;
+import com.captumia.ui.imgtransform.RoundedCornersImageTransformation;
 import com.captumia.ui.adapters.holders.CategoryViewHolder;
 import com.squareup.picasso.Picasso;
 import com.utilsframework.android.adapters.navigation.LazyLoadingListAdapter;

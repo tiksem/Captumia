@@ -1,10 +1,11 @@
-package com.captumia.ui;
+package com.captumia.ui.forms;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.captumia.R;
+import com.captumia.ui.RequestManagerActivity;
 
 public class BookServiceActivity extends RequestManagerActivity {
 

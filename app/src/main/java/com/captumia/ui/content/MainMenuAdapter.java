@@ -1,4 +1,4 @@
-package com.captumia.ui;
+package com.captumia.ui.content;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.captumia.R;
+import com.captumia.ui.forms.AddPostActivity;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
 
 public class MainMenuAdapter extends NavigationViewMenuAdapter {
