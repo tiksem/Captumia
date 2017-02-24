@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -17,6 +19,7 @@ import com.captumia.data.Region;
 import com.captumia.data.Tag;
 import com.captumia.ui.PageLoadingActivity;
 import com.captumia.ui.UiUtils;
+import com.captumia.ui.adapters.AddPostPhotoGalleryAdapter;
 import com.captumia.ui.adapters.OperatingHoursAdapter;
 import com.captumia.ui.adapters.SelectCategoryAdapter;
 import com.captumia.ui.adapters.SelectRegionAdapter;
@@ -34,12 +37,15 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import retrofit2.Call;
 
 public class AddPostActivity extends PageLoadingActivity implements EasyImage.Callbacks {
-    public static final int COVER_IMAGE_PICK = 0;
+    private static final int COVER_IMAGE_PICK = 0;
+    private static final int GALLERY_IMAGE_PICK = 1;
+
     private Spinner regionsSpinner;
     private Spinner categorySpinner;
     private List<Spinner> operatingHoursSpinners;
     private ImageView coverImageView;
     private View coverImageContainer;
+    private AddPostPhotoGalleryAdapter photoGalleryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,43 @@ public class AddPostActivity extends PageLoadingActivity implements EasyImage.Ca
         regionsSpinner = (Spinner) findViewById(R.id.region);
         categorySpinner = (Spinner) findViewById(R.id.category);
 
+        setupOperationHoursViews();
+        setupCoverImage();
+
+        AbsListView photoGalleryView = (AbsListView) findViewById(R.id.photo_gallery_list);
+        photoGalleryAdapter = new AddPostPhotoGalleryAdapter(this);
+        photoGalleryView.setAdapter(photoGalleryAdapter);
+
+        findViewById(R.id.add_gallery_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickGalleryImage();
+            }
+        });
+    }
+
+    private void pickGalleryImage() {
+        EasyImage.configuration(this).setAllowMultiplePickInGallery(true);
+        EasyImage.openGallery(this, GALLERY_IMAGE_PICK);
+    }
+
+    private void setupCoverImage() {
+        coverImageView = (ImageView) findViewById(R.id.cover_image);
+        View coverImageSelector = findViewById(R.id.select_cover_image);
+        coverImageSelector.setOnClickListener(imagePickListener());
+        coverImageView.setOnClickListener(imagePickListener());
+
+        coverImageContainer = findViewById(R.id.cover_image_container);
+
+        findViewById(R.id.delete_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDeleteCoverImage();
+            }
+        });
+    }
+
+    private void setupOperationHoursViews() {
         final View operationHoursView = findViewById(R.id.operation_hours);
         findViewById(R.id.operation_hours_toggle).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,20 +111,6 @@ public class AddPostActivity extends PageLoadingActivity implements EasyImage.Ca
         for (Spinner spinner : operatingHoursSpinners) {
             spinner.setAdapter(new OperatingHoursAdapter(this));
         }
-
-        coverImageView = (ImageView) findViewById(R.id.cover_image);
-        View coverImageSelector = findViewById(R.id.select_cover_image);
-        coverImageSelector.setOnClickListener(imagePickListener());
-        coverImageView.setOnClickListener(imagePickListener());
-
-        coverImageContainer = findViewById(R.id.cover_image_container);
-
-        findViewById(R.id.delete_image).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onDeleteCoverImage();
-            }
-        });
     }
 
     private void onDeleteCoverImage() {
@@ -187,6 +216,7 @@ public class AddPostActivity extends PageLoadingActivity implements EasyImage.Ca
     @Override
     public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
         Toasts.toast(this, R.string.image_pick_failed);
+        Log.e(EasyImage.class.getSimpleName(), "image pick failed", e);
     }
 
     @Override
@@ -206,6 +236,8 @@ public class AddPostActivity extends PageLoadingActivity implements EasyImage.Ca
 
             coverImageContainer.setVisibility(View.VISIBLE);
             UiUtils.loadImageWithCenterCrop(Picasso.with(this).load(file), coverImageView);
+        } else if(type == GALLERY_IMAGE_PICK) {
+            photoGalleryAdapter.addElements(imageFiles);
         }
     }
 
