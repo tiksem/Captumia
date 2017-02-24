@@ -26,7 +26,7 @@ public class HomeFragment extends CategoriesFragment {
 
         ImageView background = (ImageView) header.findViewById(R.id.background);
         Picasso.with(getContext()).load(R.drawable.home_header_background)
-                .placeholder(R.drawable.header_placeholder)
+                .placeholder(R.drawable.rect_image_placeholder)
                 .into(background);
 
         searchEditText = (EditText) view.findViewById(R.id.search_edit);

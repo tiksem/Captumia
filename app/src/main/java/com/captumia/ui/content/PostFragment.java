@@ -116,8 +116,10 @@ public class PostFragment extends RequestManagerFragment {
     private void setupHeader(View view, Context context) {
         PostViewHolder holder = new PostViewHolder(view);
         UiUtils.fillPostExcludingImage(holder, post);
-        UiUtils.fillPostImage(Picasso.with(context), holder, post,
-                new DarkenImageTransformation(context));
+        UiUtils.loadImageWithCenterCrop(Picasso.with(context).load(
+                        post.getMedia().getDisplayInListUrl()).
+                        transform(new DarkenImageTransformation(getContext()))
+                        .placeholder(R.drawable.post_image_placeholder), holder.image);
     }
 
     private void setupPhotoGallery(View view, Context context) {
