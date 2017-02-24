@@ -4,12 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.captumia.R;
+import com.captumia.events.LoginEvent;
+import com.captumia.events.LogoutEvent;
 import com.captumia.ui.BaseMenuActivity;
 import com.captumia.ui.forms.BusinessRegisterActivity;
 import com.captumia.ui.forms.LoginActivity;
 import com.captumia.ui.MainMenuFragmentsFactory;
 import com.utilsframework.android.navdrawer.FragmentFactory;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class MainMenuActivity extends BaseMenuActivity {
     @Override
@@ -32,6 +37,14 @@ public class MainMenuActivity extends BaseMenuActivity {
                 onSignUpClicked();
             }
         });
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void doCleanup() {
+        super.doCleanup();
+        EventBus.getDefault().unregister(this);
     }
 
     private void onSignUpClicked() {
@@ -42,6 +55,21 @@ public class MainMenuActivity extends BaseMenuActivity {
     private void onLoginClicked() {
         closeDrawer();
         LoginActivity.start(this);
+    }
+
+    @Subscribe
+    public void onLogout(LogoutEvent event) {
+        setLogoutItemVisibility(false);
+        closeDrawer();
+    }
+
+    @Subscribe
+    public void onLogin(LoginEvent event) {
+        setLogoutItemVisibility(true);
+    }
+
+    private void setLogoutItemVisibility(boolean visible) {
+        getNavigationView().getMenu().findItem(R.id.log_out).setVisible(visible);
     }
 
     @Override

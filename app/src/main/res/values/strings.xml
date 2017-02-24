@@ -63,4 +63,9 @@
     <string name="closed">Closed</string>
     <string name="image_pick_failed">Unable to select image</string>
     <string name="add_post_gallery_title">Gallery Images (optional)</string>
+    <string name="empty_login">Enter login</string>
+    <string name="empty_password">Enter password</string>
+    <string name="logging_loading">Signing in...</string>
+    <string name="hello_user_toast">Hello, %s!</string>
+    <string name="log_out">Log out</string>
 </resources>

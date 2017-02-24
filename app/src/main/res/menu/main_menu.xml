@@ -8,4 +8,8 @@
     <item
         android:title="@string/add_service"
         android:id="@+id/add_service"/>
+    <item
+        android:title="@string/log_out"
+        android:visible="false"
+        android:id="@+id/log_out"/>
 </menu>

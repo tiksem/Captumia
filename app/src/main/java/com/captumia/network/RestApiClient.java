@@ -5,11 +5,15 @@ import com.captumia.data.LoginResult;
 import com.captumia.data.Post;
 import com.captumia.data.Region;
 import com.captumia.data.Tag;
+import com.captumia.data.TokenRequestData;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface RestApiClient {
@@ -51,4 +55,9 @@ public interface RestApiClient {
 
     @GET("wp/v2/job_listing_category?orderby=count&per_page=50")
     Call<List<Category>> getCategories();
+
+    @FormUrlEncoded
+    @POST("jwt-auth/v1/token")
+    Call<TokenRequestData> getToken(@Field("username") String login,
+                                    @Field("password") String password);
 }

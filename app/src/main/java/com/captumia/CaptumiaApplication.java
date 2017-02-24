@@ -4,10 +4,15 @@ import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 
+import com.captumia.events.LoginEvent;
+import com.captumia.events.LogoutEvent;
 import com.captumia.network.RestApiClient;
 import com.squareup.picasso.Picasso;
-import com.utilsframework.android.network.retrofit.OkHttpBaseAuthHandler;
+import com.utilsframework.android.network.retrofit.OkHttpLoginPasswordAuthHandler;
+import com.utilsframework.android.network.retrofit.OkHttpTokenAuthHandler;
 import com.utilsframework.android.network.retrofit.RetrofitTemplates;
+
+import org.greenrobot.eventbus.EventBus;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -16,7 +21,7 @@ public class CaptumiaApplication extends Application {
     private static CaptumiaApplication instance;
 
     private RestApiClient restApiClient;
-    private OkHttpBaseAuthHandler okHttpBaseAuthHandler;
+    private OkHttpTokenAuthHandler authHandler;
 
     @Override
     public void onCreate() {
@@ -24,18 +29,21 @@ public class CaptumiaApplication extends Application {
         super.onCreate();
 
         initRestApiClient();
+        setupPicasso();
     }
 
     private void initRestApiClient() {
         Retrofit.Builder builder = RetrofitTemplates.generateRetrofitWithJackson(
                 RestApiClient.BASE_URL);
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
-        okHttpBaseAuthHandler = new OkHttpBaseAuthHandler(clientBuilder, this);
+        authHandler = new OkHttpTokenAuthHandler(clientBuilder, this);
         Retrofit retrofit = builder.client(
                 clientBuilder.build()).build();
 
         restApiClient = retrofit.create(RestApiClient.class);
+    }
 
+    private void setupPicasso() {
         Picasso.Builder picassoBuilder = new Picasso.Builder(this);
         picassoBuilder.listener(new Picasso.Listener() {
             @Override
@@ -46,8 +54,8 @@ public class CaptumiaApplication extends Application {
         Picasso.setSingletonInstance(picassoBuilder.build());
     }
 
-    public OkHttpBaseAuthHandler getOkHttpBaseAuthHandler() {
-        return okHttpBaseAuthHandler;
+    public OkHttpTokenAuthHandler getAuthHandler() {
+        return authHandler;
     }
 
     public RestApiClient getRestApiClient() {
@@ -56,5 +64,15 @@ public class CaptumiaApplication extends Application {
 
     public static CaptumiaApplication getInstance() {
         return instance;
+    }
+
+    public void logout() {
+        authHandler.logout();
+        EventBus.getDefault().post(new LogoutEvent());
+    }
+
+    public void login(String token) {
+        authHandler.login(token);
+        EventBus.getDefault().post(new LoginEvent());
     }
 }
