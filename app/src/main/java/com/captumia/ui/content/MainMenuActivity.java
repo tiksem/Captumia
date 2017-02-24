@@ -35,10 +35,12 @@ public class MainMenuActivity extends BaseMenuActivity {
     }
 
     private void onSignUpClicked() {
+        closeDrawer();
         BusinessRegisterActivity.start(this);
     }
 
     private void onLoginClicked() {
+        closeDrawer();
         LoginActivity.start(this);
     }
 
