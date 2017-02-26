@@ -30,7 +30,11 @@ public class PhotoGalleryAdapter extends ViewArrayAdapter<String, ImageView> {
     }
 
     @Override
-    protected void reuseView(final String url, final ImageView imageView, int position, View view) {
+    protected void reuseView(String url, final ImageView imageView, int position, View view) {
+        if (!url.startsWith("http")) {
+            url = "file://" + url;
+        }
+
         RequestCreator requestCreator = picasso.load(url).
                 placeholder(R.drawable.photo_gallery_placeholder).
                 transform(new CircleTransform());

@@ -2,8 +2,10 @@ package com.captumia.ui;
 
 import android.os.Bundle;
 
+import com.captumia.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.network.AppRequestManager;
+import com.captumia.network.RestApiClient;
 import com.utilsframework.android.navdrawer.NavigationDrawerMenuActivity;
 
 public abstract class BaseMenuActivity extends NavigationDrawerMenuActivity {
@@ -32,6 +34,14 @@ public abstract class BaseMenuActivity extends NavigationDrawerMenuActivity {
     public void finish() {
         doCleanup();
         super.finish();
+    }
+
+    public AppRequestManager getRequestManager() {
+        return requestManager;
+    }
+
+    public RestApiClient getRestApiClient() {
+        return CaptumiaApplication.getInstance().getRestApiClient();
     }
 
     @Override

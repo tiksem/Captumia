@@ -1,7 +1,10 @@
 package com.captumia.data;
 
 
-public class Region {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Region implements Parcelable {
     private int id;
     private String name;
 
@@ -20,4 +23,35 @@ public class Region {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+    }
+
+    public Region() {
+    }
+
+    protected Region(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+    }
+
+    public static final Parcelable.Creator<Region> CREATOR = new Parcelable.Creator<Region>() {
+        @Override
+        public Region createFromParcel(Parcel source) {
+            return new Region(source);
+        }
+
+        @Override
+        public Region[] newArray(int size) {
+            return new Region[size];
+        }
+    };
 }

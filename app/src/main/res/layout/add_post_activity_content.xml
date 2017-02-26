@@ -274,6 +274,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/photo_gallery_container"
             android:orientation="vertical"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_border"
@@ -298,5 +299,59 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="2dp"
+            android:paddingLeft="2dp"
+            android:textColor="@color/greyText"
+            android:text="@string/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="false"
+            android:gravity="top|left"
+            android:lines="8"
+            android:layout_height="wrap_content"
+            android:id="@+id/description"
+            style="@style/loginFromEditText"/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/website"
+            android:hint="@string/website_hint"
+            style="@style/loginFromEditText"/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/phone"
+            android:hint="@string/phone_hint"
+            style="@style/loginFromEditText"
+            android:inputType="phone"/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/video"
+            android:hint="@string/video_hint"
+            style="@style/loginFromEditText"/>
+
+        <TextView
+            android:textColor="@color/greyText"
+            android:textSize="13sp"
+            android:paddingLeft="5dp"
+            android:text="@string/video_hint_below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:id="@+id/preview"
+            android:text="@string/preview"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            style="@style/contrastButton"/>
     </LinearLayout>
 </ScrollView>

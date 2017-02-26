@@ -7,8 +7,10 @@ import android.util.Log;
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
 import com.captumia.network.RestApiClient;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.squareup.picasso.Picasso;
-import com.utilsframework.android.network.retrofit.OkHttpLoginPasswordAuthHandler;
 import com.utilsframework.android.network.retrofit.OkHttpTokenAuthHandler;
 import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
@@ -37,6 +39,11 @@ public class CaptumiaApplication extends Application {
                 RestApiClient.BASE_URL);
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         authHandler = new OkHttpTokenAuthHandler(clientBuilder, this);
+//        clientBuilder.addInterceptor(new ReceivedCookiesInterceptor(this));
+//        clientBuilder.addInterceptor(new AddCookiesInterceptor(this));
+        //JavaNetCookieJar javaNetCookieJar = new JavaNetCookieJar(CookieHandler.getDefault());
+        clientBuilder.cookieJar(new PersistentCookieJar(
+                new SetCookieCache(), new SharedPrefsCookiePersistor(this)));
         Retrofit retrofit = builder.client(
                 clientBuilder.build()).build();
 

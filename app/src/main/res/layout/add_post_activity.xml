@@ -6,4 +6,9 @@
 
     <include layout="@layout/add_post_activity_content" />
     <include layout="@layout/loading_and_no_connection" />
+
+    <FrameLayout
+        android:id="@+id/preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>

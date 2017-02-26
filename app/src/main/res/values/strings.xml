@@ -68,4 +68,18 @@
     <string name="logging_loading">Signing in...</string>
     <string name="hello_user_toast">Hello, %s!</string>
     <string name="log_out">Log out</string>
+    <string name="description">Description</string>
+    <string name="website_hint">Website (optional)</string>
+    <string name="video_hint">URL to video (optional)</string>
+    <string name="video_hint_below">Display a video on your service</string>
+    <string name="preview">Preview</string>
+    <string name="publish">Publish</string>
+    <string name="phone_hint">Phone Number (optional)</string>
+    <string name="empty_description">Description should not be empty</string>
+    <string name="empty_name">Service name should not be empty</string>
+    <string name="empty_email">Email should not be empty</string>
+    <string name="available_on">Available on</string>
+    <string name="saving_changes">Saving changes...</string>
+    <string name="unknown_error">Unknown error. Please contact support.</string>
+    <string name="service_submitted_message">Service submitted successfully. Your service will be visible once approved.</string>
 </resources>

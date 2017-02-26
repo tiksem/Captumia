@@ -1,6 +1,7 @@
 package com.captumia.ui.content;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 import com.captumia.R;
@@ -12,9 +13,20 @@ import com.captumia.ui.forms.LoginActivity;
 import com.captumia.ui.MainMenuFragmentsFactory;
 import com.utilsframework.android.navdrawer.FragmentFactory;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
+import com.utilsframework.android.network.CancelStrategy;
+import com.utilsframework.android.network.ProgressDialogRequestListener;
+import com.utilsframework.android.network.RequestListener;
+import com.utilsframework.android.view.Alerts;
+import com.utilsframework.android.view.Toasts;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class MainMenuActivity extends BaseMenuActivity {
     @Override
@@ -48,28 +60,64 @@ public class MainMenuActivity extends BaseMenuActivity {
     }
 
     private void onSignUpClicked() {
-        closeDrawer();
-        BusinessRegisterActivity.start(this);
+        //closeDrawer();
+        //BusinessRegisterActivity.start(this);
+        Call<ResponseBody> call = getRestApiClient().login();
+        getRequestManager().executeCall(call, new ProgressDialogRequestListener<ResponseBody, Throwable>(this, R.string.logging_loading) {
+            @Override
+            public void onSuccess(Response response) {
+                ResponseBody responseBody = (ResponseBody) response.body();
+                //Alerts.showOkButtonAlert(MainMenuActivity.this, response.headers().toString());
+                try {
+                    Alerts.showOkButtonAlert(MainMenuActivity.this, responseBody.string());
+                } catch (IOException e) {
+                    Toasts.toast(MainMenuActivity.this, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toasts.toast(MainMenuActivity.this, e.getMessage());
+            }
+        }, CancelStrategy.INTERRUPT);
     }
 
     private void onLoginClicked() {
-        closeDrawer();
-        LoginActivity.start(this);
+//        closeDrawer();
+//        LoginActivity.start(this);
+        Call<ResponseBody> call = getRestApiClient().test();
+        getRequestManager().executeCall(call, new ProgressDialogRequestListener<ResponseBody, Throwable>(this, R.string.logging_loading) {
+            @Override
+            public void onSuccess(ResponseBody response) {
+                try {
+                    Alerts.showOkButtonAlert(MainMenuActivity.this, response.string());
+                } catch (IOException e) {
+                    Toasts.toast(MainMenuActivity.this, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toasts.toast(MainMenuActivity.this, e.getMessage());
+            }
+        }, CancelStrategy.INTERRUPT);
     }
 
     @Subscribe
     public void onLogout(LogoutEvent event) {
-        setLogoutItemVisibility(false);
+        setUserItemsVisibility(false);
         closeDrawer();
     }
 
     @Subscribe
     public void onLogin(LoginEvent event) {
-        setLogoutItemVisibility(true);
+        setUserItemsVisibility(true);
     }
 
-    private void setLogoutItemVisibility(boolean visible) {
-        getNavigationView().getMenu().findItem(R.id.log_out).setVisible(visible);
+    private void setUserItemsVisibility(boolean visible) {
+        Menu menu = getNavigationView().getMenu();
+        menu.findItem(R.id.log_out).setVisible(visible);
+        menu.findItem(R.id.add_service).setVisible(visible);
     }
 
     @Override

@@ -8,12 +8,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.utils.framework.Lists;
 import com.utils.framework.strings.Strings;
+import com.utilsframework.android.network.retrofit.RequestBodies;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class Post implements Parcelable {
     private static final Pattern GALLERY_IMAGE_PATTERN = Pattern.compile("\"([^\"]+)\"");
@@ -32,6 +40,20 @@ public class Post implements Parcelable {
     @JsonIgnore
     private String description;
     private List<Tag> tags;
+    @JsonIgnore
+    private String email;
+    @JsonIgnore
+    private String website;
+    @JsonIgnore
+    private String videoUrl;
+    @JsonIgnore
+    private String location;
+    @JsonIgnore
+    private Region region;
+    @JsonIgnore
+    private List<OperatingHoursItem> operationHours;
+    @JsonIgnore
+    private Category category;
 
     @JsonSetter("title")
     public void setTitleFromJson(JsonNode jsonNode) {
@@ -109,6 +131,11 @@ public class Post implements Parcelable {
     }
 
     public List<String> getAddress() {
+        if (address == null) {
+            String regionName = region == null ? null : region.getName();
+            return Lists.withoutNulls(location, regionName);
+        }
+
         return address;
     }
 
@@ -128,8 +155,104 @@ public class Post implements Parcelable {
         this.tags = tags;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public List<OperatingHoursItem> getOperationHours() {
+        return operationHours;
+    }
+
+    public void setOperationHours(List<OperatingHoursItem> operationHours) {
+        this.operationHours = operationHours;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getCoverImage() {
+        Media media = getMedia();
+        if (media == null) {
+            return null;
+        }
+
+        return media.getSourceUrl();
+    }
+//    public Map<String, RequestBody> getPostRequestMap() {
+//        Map<String, RequestBody> result = new HashMap<>();
+//        result.put("job_title", RequestBodies.fromString(title));
+//        if (location != null) {
+//            result.put("job_location", RequestBodies.fromString(location));
+//        }
+//        if (region != null) {
+//            result.put("job_region", RequestBodies.fromString(region));
+//        }
+//        if (email != null) {
+//            result.put("application", RequestBodies.fromString(email));
+//        }
+//        result.put("job_category[]", RequestBodies.fromString(category));
+//    }
+
     public Post() {
     }
+
 
     @Override
     public int describeContents() {
@@ -146,6 +269,13 @@ public class Post implements Parcelable {
         dest.writeStringList(this.photos);
         dest.writeString(this.description);
         dest.writeList(this.tags);
+        dest.writeString(this.email);
+        dest.writeString(this.website);
+        dest.writeString(this.videoUrl);
+        dest.writeString(this.location);
+        dest.writeParcelable(this.region, flags);
+        dest.writeTypedList(this.operationHours);
+        dest.writeParcelable(this.category, flags);
     }
 
     protected Post(Parcel in) {
@@ -158,6 +288,13 @@ public class Post implements Parcelable {
         this.description = in.readString();
         this.tags = new ArrayList<Tag>();
         in.readList(this.tags, Tag.class.getClassLoader());
+        this.email = in.readString();
+        this.website = in.readString();
+        this.videoUrl = in.readString();
+        this.location = in.readString();
+        this.region = in.readParcelable(Region.class.getClassLoader());
+        this.operationHours = in.createTypedArrayList(OperatingHoursItem.CREATOR);
+        this.category = in.readParcelable(Category.class.getClassLoader());
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {

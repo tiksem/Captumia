@@ -14,6 +14,10 @@ public class Media implements Parcelable {
     @JsonProperty("source_url")
     private String sourceUrl;
 
+    public Media(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
     @JsonSetter("media_details")
     public void setImageDetails(JsonNode jsonNode) {
         JsonNode largeNode = jsonNode.get("sizes").get("large");

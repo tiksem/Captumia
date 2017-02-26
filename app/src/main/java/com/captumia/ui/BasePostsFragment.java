@@ -14,7 +14,7 @@ public abstract class BasePostsFragment extends BaseLazyLoadingFragment<Post> {
 
     @Override
     protected void onListItemClicked(Post item, int position) {
-        PostFragment fragment = PostFragment.create(item);
+        PostFragment fragment = PostFragment.create(item, false);
         getNavigationInterface().replaceFragment(fragment, 1);
     }
 

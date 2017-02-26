@@ -9,12 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.captumia.CaptumiaApplication;
 import com.captumia.R;
+import com.captumia.data.Media;
+import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
 import com.captumia.network.AppRequestManager;
+import com.captumia.network.CreateAndPublishServiceRequest;
+import com.captumia.network.RestApiClient;
+import com.captumia.network.ServicePublicationListener;
 import com.captumia.ui.forms.BookServiceActivity;
 import com.captumia.ui.UiUtils;
 import com.captumia.ui.forms.WriteReviewActivity;
@@ -22,17 +29,37 @@ import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.captumia.ui.imgtransform.DarkenImageTransformation;
 import com.squareup.picasso.Picasso;
+import com.utils.framework.CollectionUtils;
+import com.utils.framework.Transformer;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.fragments.RequestManagerFragment;
 import com.utilsframework.android.navdrawer.NavigationActivityInterface;
+import com.utilsframework.android.network.CancelStrategy;
+import com.utilsframework.android.network.ProgressDialogRequestListener;
+import com.utilsframework.android.network.retrofit.RequestBodies;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
+import com.utilsframework.android.view.Alerts;
+import com.utilsframework.android.view.GuiUtilities;
+import com.utilsframework.android.view.Toasts;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class PostFragment extends RequestManagerFragment {
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+
+public class PostFragment extends RequestManagerFragment implements ServicePublicationListener {
     public static final String POST = "post";
+    public static final String PREVIEW_MODE = "previewMode";
+
     private Post post;
+    private View publishButton;
 
     @Nullable
     @Override
@@ -50,14 +77,16 @@ public class PostFragment extends RequestManagerFragment {
         setupPhotoGallery(view, context);
         setupDescription(view);
 
-        view.findViewById(R.id.book_now).setOnClickListener(new View.OnClickListener() {
+        View bookButton = view.findViewById(R.id.book_now);
+        bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BookServiceActivity.start(getContext(), post.getId());
             }
         });
 
-        view.findViewById(R.id.write_a_review_button).setOnClickListener(
+        View reviewButton = view.findViewById(R.id.write_a_review_button);
+        reviewButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -66,6 +95,69 @@ public class PostFragment extends RequestManagerFragment {
                 });
 
         setupTags(view);
+
+        publishButton = view.findViewById(R.id.publish);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPublish();
+            }
+        });
+
+        if (isPreviewMode()) {
+            GuiUtilities.setVisibility(View.GONE, bookButton, reviewButton);
+            publishButton.setVisibility(View.VISIBLE);
+        } else {
+            GuiUtilities.setVisibility(View.VISIBLE, bookButton, reviewButton);
+            publishButton.setVisibility(View.GONE);
+        }
+
+        View operatingHoursContainer = view.findViewById(R.id.operation_hours);
+        List<OperatingHoursItem> operationHours = post.getOperationHours();
+        if (operationHours.isEmpty()) {
+            operatingHoursContainer.setVisibility(View.GONE);
+        } else {
+            operatingHoursContainer.setVisibility(View.VISIBLE);
+            List<TableRow> rows = GuiUtilities.getAllChildrenRecursive(operatingHoursContainer,
+                    TableRow.class);
+            for (OperatingHoursItem item : operationHours) {
+                int day = item.getDay();
+                TableRow tableRow = rows.get(day);
+                tableRow.setVisibility(View.VISIBLE);
+                TextView timeView = (TextView) tableRow.getChildAt(1);
+                timeView.setText(item.getStartTime() + " - " + item.getEndTime());
+            }
+        }
+    }
+
+    private void onPublish() {
+        publishButton.setEnabled(false);
+        CreateAndPublishServiceRequest request = new CreateAndPublishServiceRequest(getContext(),
+                getRestApiClient(), getRequestManager());
+        request.setServicePublicationListener(this);
+        request.execute(post);
+    }
+
+    @Override
+    public void onServicePublished() {
+        Alerts.showOkButtonAlert(getContext().getApplicationContext(),
+                R.string.service_submitted_message);
+        getActivity().finish();
+        publishButton.setEnabled(true);
+    }
+
+    @Override
+    public void onServicePublicationError() {
+        getActivity().onBackPressed();
+        publishButton.setEnabled(true);
+    }
+
+    private void onServiceSuccessfullyPublished() {
+
+    }
+
+    private boolean isPreviewMode() {
+        return Fragments.getBoolean(this, PREVIEW_MODE);
     }
 
     private void setupTags(View view) {
@@ -77,13 +169,15 @@ public class PostFragment extends RequestManagerFragment {
             tagsView.setVisibility(View.VISIBLE);
             for (final Tag tag : tags) {
                 View tagView = createTagView(tag);
-                tagView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PostsByTagFragment fragment = PostsByTagFragment.create(tag.getId());
-                        getNavigationInterface().replaceFragment(fragment, 1);
-                    }
-                });
+                if (!isPreviewMode()) {
+                    tagView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            PostsByTagFragment fragment = PostsByTagFragment.create(tag.getId());
+                            getNavigationInterface().replaceFragment(fragment, 1);
+                        }
+                    });
+                }
                 tagsView.addView(tagView);
             }
         }
@@ -116,10 +210,18 @@ public class PostFragment extends RequestManagerFragment {
     private void setupHeader(View view, Context context) {
         PostViewHolder holder = new PostViewHolder(view);
         UiUtils.fillPostExcludingImage(holder, post);
-        UiUtils.loadImageWithCenterCrop(Picasso.with(context).load(
-                        post.getMedia().getDisplayInListUrl()).
-                        transform(new DarkenImageTransformation(getContext()))
-                        .placeholder(R.drawable.post_image_placeholder), holder.image);
+        Media media = post.getMedia();
+        if (media != null) {
+            String displayInListUrl = media.getDisplayInListUrl();
+            if (!displayInListUrl.startsWith("http")) {
+                displayInListUrl = "file://" + displayInListUrl;
+            }
+
+            UiUtils.loadImageWithCenterCrop(Picasso.with(context).load(
+                    displayInListUrl).
+                            transform(new DarkenImageTransformation(getContext()))
+                            .placeholder(R.drawable.rect_image_placeholder), holder.image);
+        }
     }
 
     private void setupPhotoGallery(View view, Context context) {
@@ -129,8 +231,13 @@ public class PostFragment extends RequestManagerFragment {
         photosListView.setAdapter(adapter);
     }
 
-    public static PostFragment create(Post post) {
-        return Fragments.createFragmentWith1Arg(new PostFragment(), POST, post);
+    public static PostFragment create(Post post, boolean previewMode) {
+        Bundle args = new Bundle();
+        args.putParcelable(POST, post);
+        args.putBoolean(PREVIEW_MODE, previewMode);
+        PostFragment fragment = new PostFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -146,5 +253,9 @@ public class PostFragment extends RequestManagerFragment {
 
     public NavigationActivityInterface getNavigationInterface() {
         return (NavigationActivityInterface) getActivity();
+    }
+
+    public RestApiClient getRestApiClient() {
+        return CaptumiaApplication.getInstance().getRestApiClient();
     }
 }
