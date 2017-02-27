@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import com.captumia.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
@@ -51,6 +52,7 @@ public class MainMenuActivity extends BaseMenuActivity {
         });
 
         EventBus.getDefault().register(this);
+        setUserItemsVisibility(CaptumiaApplication.getInstance().getAuthHandler().isLoggedIn());
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MainMenuActivity extends BaseMenuActivity {
     private void onSignUpClicked() {
         //closeDrawer();
         //BusinessRegisterActivity.start(this);
-        Call<ResponseBody> call = getRestApiClient().login();
+        Call<ResponseBody> call = getRestApiClient().test();
         getRequestManager().executeCall(call, new ProgressDialogRequestListener<ResponseBody, Throwable>(this, R.string.logging_loading) {
             @Override
             public void onSuccess(Response response) {
@@ -83,24 +85,8 @@ public class MainMenuActivity extends BaseMenuActivity {
     }
 
     private void onLoginClicked() {
-//        closeDrawer();
-//        LoginActivity.start(this);
-        Call<ResponseBody> call = getRestApiClient().test();
-        getRequestManager().executeCall(call, new ProgressDialogRequestListener<ResponseBody, Throwable>(this, R.string.logging_loading) {
-            @Override
-            public void onSuccess(ResponseBody response) {
-                try {
-                    Alerts.showOkButtonAlert(MainMenuActivity.this, response.string());
-                } catch (IOException e) {
-                    Toasts.toast(MainMenuActivity.this, e.getMessage());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Toasts.toast(MainMenuActivity.this, e.getMessage());
-            }
-        }, CancelStrategy.INTERRUPT);
+        closeDrawer();
+        LoginActivity.start(this);
     }
 
     @Subscribe

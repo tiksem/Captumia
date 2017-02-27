@@ -15,6 +15,7 @@ import com.utilsframework.android.network.RequestListener;
 import com.utilsframework.android.network.retrofit.RequestBodies;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.Toasts;
+import com.utilsframework.android.web.WebViewActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,9 @@ import retrofit2.Call;
 
 public class CreateAndPublishServiceRequest {
     public static final String PUBLISH_STEP = "2";
-    public static final String PUBLISH_FORM_NAME = "submit-job";
+    public static final String PREVIEW_STEP = "1";
+    public static final String FORM_NAME = "submit-job";
+    public static final String DEFAULT_JOB_ID = "0";
 
     private Context context;
     private RestApiClient restApiClient;
@@ -92,7 +95,10 @@ public class CreateAndPublishServiceRequest {
                 post.getDescription(),
                 post.getWebsite(),
                 post.getPhone(),
-                post.getVideoUrl());
+                post.getVideoUrl(),
+                DEFAULT_JOB_ID,
+                FORM_NAME,
+                PREVIEW_STEP);
 
 
         progressDialog = ProgressDialog.show(context, null, context.getString(R.string.saving_changes));
@@ -122,15 +128,19 @@ public class CreateAndPublishServiceRequest {
     private void onServiceCreatingFinished(ResponseBody responseBody) {
         try {
             String body = responseBody.string();
+            WebViewActivity.loadHtml(context, body);
             String error = Strings.getFirstStringBetweenQuotes(body,
                     "class=\"job-manager-error\">", "</");
             if (!Strings.isEmpty(error)) {
                 Toasts.toast(context, error);
+                progressDialog.hide();
+                executeErrorListener();
             } else {
                 onServiceCreated(body);
             }
         } catch (IOException e) {
             Toasts.toast(context, e.getMessage());
+            progressDialog.hide();
             executeErrorListener();
         }
     }
@@ -146,8 +156,7 @@ public class CreateAndPublishServiceRequest {
             progressDialog.hide();
             return;
         }
-        Call<ResponseBody> call = restApiClient.publishService(jobId, PUBLISH_STEP,
-                PUBLISH_FORM_NAME);
+        Call<ResponseBody> call = restApiClient.publishService(jobId, PUBLISH_STEP, FORM_NAME);
         requestManager.executeCall(call, new RequestListener<ResponseBody, Throwable>() {
             @Override
             public void onAfterCompleteOrCanceled() {

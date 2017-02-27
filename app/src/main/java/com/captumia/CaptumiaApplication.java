@@ -16,10 +16,12 @@ import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
 import org.greenrobot.eventbus.EventBus;
 
+import okhttp3.Cookie;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class CaptumiaApplication extends Application {
+    public static final String NONCE_HEADER = "X-WP-Nonce";
     private static CaptumiaApplication instance;
 
     private RestApiClient restApiClient;
@@ -32,6 +34,20 @@ public class CaptumiaApplication extends Application {
 
         initRestApiClient();
         setupPicasso();
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                while (true) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     private void initRestApiClient() {
@@ -39,11 +55,10 @@ public class CaptumiaApplication extends Application {
                 RestApiClient.BASE_URL);
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         authHandler = new OkHttpTokenAuthHandler(clientBuilder, this);
-//        clientBuilder.addInterceptor(new ReceivedCookiesInterceptor(this));
-//        clientBuilder.addInterceptor(new AddCookiesInterceptor(this));
-        //JavaNetCookieJar javaNetCookieJar = new JavaNetCookieJar(CookieHandler.getDefault());
-        clientBuilder.cookieJar(new PersistentCookieJar(
-                new SetCookieCache(), new SharedPrefsCookiePersistor(this)));
+        authHandler.getAuthenticationInterceptor().setHeaderKey(NONCE_HEADER);
+        PersistentCookieJar cookieJar = new PersistentCookieJar(
+                new SetCookieCache(), new SharedPrefsCookiePersistor(this));
+        clientBuilder.cookieJar(cookieJar);
         Retrofit retrofit = builder.client(
                 clientBuilder.build()).build();
 
@@ -78,8 +93,8 @@ public class CaptumiaApplication extends Application {
         EventBus.getDefault().post(new LogoutEvent());
     }
 
-    public void login(String token) {
-        authHandler.login(token);
+    public void login(String nonce) {
+        authHandler.login(nonce);
         EventBus.getDefault().post(new LoginEvent());
     }
 }

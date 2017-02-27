@@ -1,11 +1,12 @@
 package com.captumia.network;
 
 import com.captumia.data.Category;
-import com.captumia.data.LoginResult;
+import com.captumia.data.Nonce;
 import com.captumia.data.Post;
 import com.captumia.data.Region;
 import com.captumia.data.Tag;
 import com.captumia.data.TokenRequestData;
+import com.captumia.data.User;
 
 import java.io.File;
 import java.util.List;
@@ -76,17 +77,23 @@ public interface RestApiClient {
                                      @Part("job_description") String description,
                                      @Part("company_website") String webSite,
                                      @Part("phone") String phone,
-                                     @Part("company_video") String video);
+                                     @Part("company_video") String video,
+                                     @Part("job_id") String jobId,
+                                     @Part("job_manager_form") String formName,
+                                     @Part("step") String step);
 
-    @Multipart
     @FormUrlEncoded
     @POST("add-your-listing/")
     Call<ResponseBody> publishService(@Field("job_id") String jobId,
                                       @Field("step") String step,
                                       @Field("job_manager_form") String formName);
 
-    @GET("wp-json/custom/login")
-    Call<ResponseBody> login();
+    @FormUrlEncoded
+    @POST("wp-json/custom/login")
+    Call<User> login(@Field("username") String login,
+                     @Field("password") String password);
     @GET("wp-json/custom/test")
     Call<ResponseBody> test();
+    @GET("wp-json/custom/get_nonce")
+    Call<Nonce> getNonce();
 }

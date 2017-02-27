@@ -30,6 +30,7 @@ import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.captumia.ui.imgtransform.DarkenImageTransformation;
 import com.squareup.picasso.Picasso;
 import com.utils.framework.CollectionUtils;
+import com.utils.framework.Lists;
 import com.utils.framework.Transformer;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
@@ -114,7 +115,7 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
 
         View operatingHoursContainer = view.findViewById(R.id.operation_hours);
         List<OperatingHoursItem> operationHours = post.getOperationHours();
-        if (operationHours.isEmpty()) {
+        if (Lists.isEmpty(operationHours)) {
             operatingHoursContainer.setVisibility(View.GONE);
         } else {
             operatingHoursContainer.setVisibility(View.VISIBLE);

@@ -54,6 +54,13 @@
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
+
+        <activity android:name="com.utilsframework.android.web.WebViewActivity"
+                  android:label="@string/add_service"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/ActionBarActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>
