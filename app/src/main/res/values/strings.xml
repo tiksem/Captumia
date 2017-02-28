@@ -88,4 +88,5 @@
     <string name="packages_title">Select a Package</string>
     <string name="limited_package_description" formatted="false">%d EGP for %d listings</string>
     <string name="unlimited_package_description" formatted="false">%d EGP for unlimited listings listed for %d days</string>
+    <string name="login_required">Please sign in</string>
 </resources>

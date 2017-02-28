@@ -2,17 +2,12 @@ package com.captumia.ui.forms;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.captumia.R;
-import com.captumia.app.CaptumiaApplication;
-import com.captumia.app.NetworkHandler;
 import com.captumia.data.PackageSubscription;
+import com.captumia.events.LoginEvent;
 import com.captumia.network.PackagesLazyLoadingList;
-import com.captumia.network.RestApiClient;
 import com.captumia.ui.BaseLazyLoadingFragment;
 import com.captumia.ui.UiUtils;
 import com.captumia.ui.adapters.PackagesAdapter;
@@ -21,8 +16,6 @@ import com.utilsframework.android.adapters.ViewArrayAdapter;
 import com.utilsframework.android.navdrawer.ActionBarTitleProvider;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.listview.ListViews;
-
-import okhttp3.Cookie;
 
 public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
         implements ActionBarTitleProvider {
@@ -74,5 +67,10 @@ public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
 
     public AddServiceActivityInterface getActivityInterface() {
         return (AddServiceActivityInterface) getActivity();
+    }
+
+    @Override
+    public void onLogin(LoginEvent event) {
+        updateNavigationListWithLastFilter();
     }
 }

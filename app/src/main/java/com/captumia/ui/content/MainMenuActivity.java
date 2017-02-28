@@ -2,6 +2,7 @@ package com.captumia.ui.content;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.captumia.app.CaptumiaApplication;
@@ -9,6 +10,7 @@ import com.captumia.R;
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
 import com.captumia.ui.BaseMenuActivity;
+import com.captumia.ui.forms.BusinessRegisterActivity;
 import com.captumia.ui.forms.LoginActivity;
 import com.captumia.ui.MainMenuFragmentsFactory;
 import com.utilsframework.android.navdrawer.FragmentFactory;
@@ -28,6 +30,10 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class MainMenuActivity extends BaseMenuActivity {
+
+    private View loginButton;
+    private View signUpButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +41,16 @@ public class MainMenuActivity extends BaseMenuActivity {
         getNavigationView().addHeaderView(header);
         registerHeaderItemAsSelectable(R.id.logo);
 
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+        loginButton = findViewById(R.id.login);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLoginClicked();
             }
         });
 
-        findViewById(R.id.signup).setOnClickListener(new View.OnClickListener() {
+        signUpButton = findViewById(R.id.signup);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSignUpClicked();
@@ -50,7 +58,7 @@ public class MainMenuActivity extends BaseMenuActivity {
         });
 
         EventBus.getDefault().register(this);
-        setUserItemsVisibility(CaptumiaApplication.getInstance().getLoginHandler().isLoggedIn());
+        setUserItemsVisibility(CaptumiaApplication.getInstance().getNetworkHandler().isLoggedIn());
     }
 
     @Override
@@ -60,26 +68,8 @@ public class MainMenuActivity extends BaseMenuActivity {
     }
 
     private void onSignUpClicked() {
-        //closeDrawer();
-        //BusinessRegisterActivity.start(this);
-        Call<ResponseBody> call = getRestApiClient().test();
-        getRequestManager().executeCall(call, new ProgressDialogRequestListener<ResponseBody, Throwable>(this, R.string.logging_loading) {
-            @Override
-            public void onSuccess(Response response) {
-                ResponseBody responseBody = (ResponseBody) response.body();
-                //Alerts.showOkButtonAlert(MainMenuActivity.this, response.headers().toString());
-                try {
-                    Alerts.showOkButtonAlert(MainMenuActivity.this, responseBody.string());
-                } catch (IOException e) {
-                    Toasts.toast(MainMenuActivity.this, e.getMessage());
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Toasts.toast(MainMenuActivity.this, e.getMessage());
-            }
-        }, CancelStrategy.INTERRUPT);
+        closeDrawer();
+        BusinessRegisterActivity.start(this);
     }
 
     private void onLoginClicked() {
@@ -102,6 +92,8 @@ public class MainMenuActivity extends BaseMenuActivity {
         Menu menu = getNavigationView().getMenu();
         menu.findItem(R.id.log_out).setVisible(visible);
         menu.findItem(R.id.add_service).setVisible(visible);
+        loginButton.setVisibility(visible ? View.GONE : View.VISIBLE);
+        signUpButton.setVisibility(visible ? View.GONE : View.VISIBLE);
     }
 
     @Override

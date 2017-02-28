@@ -22,11 +22,6 @@ public class MainMenuAdapter extends NavigationViewMenuAdapter {
                            int menuResourceId) {
         super(activity, navigationViewId, menuResourceId);
         context = activity;
-        Menu menu = getNavigationMenuView().getMenu();
-        MenuItem logoutItem = menu.findItem(R.id.log_out);
-        boolean loggedIn = CaptumiaApplication.getInstance().getLoginHandler().isLoggedIn();
-        //logoutItem.setVisible(loggedIn);
-        //menu.findItem(R.id.add_service).setVisible(loggedIn);
     }
 
     @Override

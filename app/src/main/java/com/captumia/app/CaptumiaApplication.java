@@ -6,29 +6,18 @@ import android.util.Log;
 
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
-import com.captumia.network.LoginHandler;
 import com.captumia.network.RestApiClient;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.Picasso;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManagerFactory;
-import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.net.HttpCookie;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 public class CaptumiaApplication extends Application {
     public static final int IMAGES_CACHE_SIZE = 1024 * 1024 * 20;
 
     private static CaptumiaApplication instance;
 
-    private LoginHandler loginHandler;
     private NetworkHandler networkHandler;
 
     @Override
@@ -37,7 +26,6 @@ public class CaptumiaApplication extends Application {
         super.onCreate();
 
         networkHandler = new NetworkHandler(this);
-        loginHandler = new LoginHandler(this);
         setupPicasso();
 
         new Thread() {
@@ -67,10 +55,6 @@ public class CaptumiaApplication extends Application {
         Picasso.setSingletonInstance(picassoBuilder.build());
     }
 
-    public LoginHandler getLoginHandler() {
-        return loginHandler;
-    }
-
     public RestApiClient getRestApiClient() {
         return networkHandler.getRestApiClient();
     }
@@ -80,12 +64,11 @@ public class CaptumiaApplication extends Application {
     }
 
     public void logout() {
-        loginHandler.logout();
+        networkHandler.logout();
         EventBus.getDefault().post(new LogoutEvent());
     }
 
-    public void login(String username, String password) {
-        loginHandler.login(username, password);
+    public void login() {
         EventBus.getDefault().post(new LoginEvent());
     }
 

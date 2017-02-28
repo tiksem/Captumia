@@ -57,16 +57,16 @@ public class LoginActivity extends RequestManagerActivity {
 
                     @Override
                     public void onSuccess(User user) {
-                        onUserIsReady(user, login, password);
+                        onUserIsReady(user);
                     }
                 };
         Call<User> call = getRestApiClient().login(login, password);
         getRequestManager().executeCall(call, listener, CancelStrategy.INTERRUPT);
     }
 
-    private void onUserIsReady(User user, String login, String password) {
-        CaptumiaApplication.getInstance().login(login, password);
-        Toasts.toast(this, R.string.hello_user_toast, "Ivan");
+    private void onUserIsReady(User user) {
+        CaptumiaApplication.getInstance().login();
+        Toasts.toast(this, R.string.hello_user_toast, user.getDisplayName());
         finish();
     }
 
