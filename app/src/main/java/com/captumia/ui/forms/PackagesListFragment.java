@@ -51,7 +51,8 @@ public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
             serviceFromFragment = new ServiceFromFragment();
         }
         getNavigationInterface().replaceFragment(serviceFromFragment, 1);
-        packagesAdapter.setSelectedPackageId(packageSubscription.getId());
+        packagesAdapter.setSelectedPackageId(packageSubscription.getId(),
+                packageSubscription.isUserPackage());
     }
 
     @Override

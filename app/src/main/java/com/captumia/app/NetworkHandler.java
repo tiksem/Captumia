@@ -11,6 +11,7 @@ import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
 import java.net.HttpCookie;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import okhttp3.Cookie;
@@ -28,7 +29,17 @@ public class NetworkHandler {
                 RestApiClient.BASE_URL);
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         PersistentCookieJar cookieJar = new PersistentCookieJar(
-                new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+                new SetCookieCache(), new SharedPrefsCookiePersistor(context){
+            @Override
+            public void saveAll(Collection<Cookie> cookies) {
+                super.saveAll(cookies);
+            }
+        }) {
+            @Override
+            public synchronized List<Cookie> loadForRequest(HttpUrl url) {
+                return super.loadForRequest(url);
+            }
+        };
         clientBuilder.cookieJar(cookieJar);
         Retrofit retrofit = builder.client(
                 clientBuilder.build()).build();

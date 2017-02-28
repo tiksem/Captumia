@@ -11,6 +11,7 @@ import com.utilsframework.android.adapters.navigation.LazyLoadingListAdapter;
 
 public class PackagesAdapter extends LazyLoadingListAdapter<Object, PackageHolder> {
     private int selectedPackageId = -1;
+    private boolean isUserPackageSelected = false;
 
     protected static final int VIEW_TYPES_COUNT = LazyLoadingListAdapter.VIEW_TYPES_COUNT + 2;
     private static final int YOUR_PACKAGES_HEADER_VIEW_TYPE = LazyLoadingListAdapter.VIEW_TYPES_COUNT;
@@ -57,8 +58,9 @@ public class PackagesAdapter extends LazyLoadingListAdapter<Object, PackageHolde
         return null;
     }
 
-    public void setSelectedPackageId(int selectedPackageId) {
+    public void setSelectedPackageId(int selectedPackageId, boolean isUserPackage) {
         this.selectedPackageId = selectedPackageId;
+        this.isUserPackageSelected = isUserPackage;
         notifyDataSetChanged();
     }
 
@@ -81,7 +83,9 @@ public class PackagesAdapter extends LazyLoadingListAdapter<Object, PackageHolde
             }
             holder.description.setText(description);
 
-            holder.selection.setSelected(subscription.getId() == selectedPackageId);
+            holder.selection.setSelected(
+                    subscription.getId() == selectedPackageId &&
+                            isUserPackageSelected == subscription.isUserPackage());
         }
     }
 
