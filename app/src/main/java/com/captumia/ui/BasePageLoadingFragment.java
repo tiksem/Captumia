@@ -3,38 +3,28 @@ package com.captumia.ui;
 import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.network.RestApiClient;
+import com.utilsframework.android.fragments.PageLoadingFragment;
 import com.utilsframework.android.navdrawer.NavigationActivityInterface;
-import com.utilsframework.android.fragments.LazyLoadingListFragment;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
-public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment<T> {
+public abstract class BasePageLoadingFragment extends PageLoadingFragment {
     @Override
-    protected int getListResourceId() {
-        return R.id.list;
+    public int getContentLayoutId() {
+        return R.id.content;
     }
 
     @Override
-    protected int getLoadingResourceId() {
+    public int getLoadingLayoutId() {
         return R.id.loading;
     }
 
     @Override
-    protected int getRetryLoadingButtonId() {
+    public int getRetryButtonId() {
         return R.id.retry;
     }
 
     @Override
-    protected int getRootLayout() {
-        return R.layout.lazy_loading_list_fragment;
-    }
-
-    @Override
-    protected void onListItemClicked(T item, int position) {
-
-    }
-
-    @Override
-    protected int getNoInternetConnectionViewId() {
+    public int getNoConnectionView() {
         return R.id.no_connection;
     }
 
@@ -43,11 +33,11 @@ public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment
         return CaptumiaApplication.getInstance().getRequestManagerFactory().createRequestManager();
     }
 
-    public final RestApiClient getRestApiClient() {
-        return CaptumiaApplication.getInstance().getRestApiClient();
-    }
-
     public NavigationActivityInterface getNavigationInterface() {
         return (NavigationActivityInterface) getActivity();
+    }
+
+    public final RestApiClient getRestApiClient() {
+        return CaptumiaApplication.getInstance().getRestApiClient();
     }
 }

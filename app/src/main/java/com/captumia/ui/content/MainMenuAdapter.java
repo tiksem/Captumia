@@ -5,9 +5,11 @@ import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.captumia.CaptumiaApplication;
+import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
-import com.captumia.ui.forms.AddPostActivity;
+import com.captumia.ui.forms.AddServiceActivity;
+import com.captumia.ui.forms.PackagesListFragment;
+import com.utilsframework.android.fragments.OneFragmentActivity;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
 
 public class MainMenuAdapter extends NavigationViewMenuAdapter {
@@ -22,7 +24,7 @@ public class MainMenuAdapter extends NavigationViewMenuAdapter {
         context = activity;
         Menu menu = getNavigationMenuView().getMenu();
         MenuItem logoutItem = menu.findItem(R.id.log_out);
-        boolean loggedIn = CaptumiaApplication.getInstance().getAuthHandler().isLoggedIn();
+        boolean loggedIn = CaptumiaApplication.getInstance().getLoginHandler().isLoggedIn();
         //logoutItem.setVisible(loggedIn);
         //menu.findItem(R.id.add_service).setVisible(loggedIn);
     }
@@ -31,7 +33,7 @@ public class MainMenuAdapter extends NavigationViewMenuAdapter {
     protected void onItemSelected(int itemId) {
         if (itemId == R.id.add_service) {
             imitateTap(itemId);
-            AddPostActivity.start(context);
+            AddServiceActivity.start(context);
         } else if(itemId == R.id.log_out) {
             imitateTap(itemId);
             CaptumiaApplication.getInstance().logout();

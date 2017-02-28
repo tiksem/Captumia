@@ -26,7 +26,7 @@ public class CategoryAdapter extends LazyLoadingListAdapter<Category, CategoryVi
     }
 
     @Override
-    protected CategoryViewHolder createViewHolder(View view) {
+    protected CategoryViewHolder createViewHolder(View view, int itemViewType) {
         return new CategoryViewHolder(view);
     }
 

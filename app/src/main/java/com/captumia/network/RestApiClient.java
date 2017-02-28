@@ -1,12 +1,7 @@
 package com.captumia.network;
 
-import com.captumia.data.Category;
-import com.captumia.data.Nonce;
-import com.captumia.data.Post;
-import com.captumia.data.Region;
-import com.captumia.data.Tag;
-import com.captumia.data.TokenRequestData;
-import com.captumia.data.User;
+import com.captumia.data.*;
+import com.captumia.data.PackageSubscription;
 
 import java.io.File;
 import java.util.List;
@@ -18,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -25,7 +21,8 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface RestApiClient {
-    String BASE_URL = "https://www.captumia.com/";
+    String DOMAIN = "www.captumia.com";
+    String BASE_URL = "https://" + DOMAIN + "/";
 
     @GET("wp-json/wp/v2/job_listing")
     Call<List<Post>> getPostsByCategory(@Query("job_listing_category") int categoryId,
@@ -55,6 +52,12 @@ public interface RestApiClient {
 
     @GET("wp-json/wp/v2/job_listing_region?per_page=50")
     Call<List<Region>> getRegions();
+
+    @GET("wp-json/wp/v2/product?product_type=11&per_page=50")
+    Call<List<PackageSubscription>> getPackages();
+
+    @GET("wp-json/custom/get_user_packages")
+    Call<List<PackageSubscription>> getUserPackages();
 
     @GET("wp-json/wp/v2/job_listing_category?orderby=count&per_page=50")
     Call<List<Category>> getCategories();

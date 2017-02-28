@@ -1,4 +1,4 @@
-package com.captumia;
+package com.captumia.app;
 
 import android.app.Application;
 import android.net.Uri;
@@ -6,33 +6,35 @@ import android.util.Log;
 
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
+import com.captumia.network.LoginHandler;
 import com.captumia.network.RestApiClient;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.squareup.picasso.Picasso;
-import com.utilsframework.android.network.retrofit.OkHttpTokenAuthHandler;
+import com.utilsframework.android.network.retrofit.RetrofitRequestManagerFactory;
 import com.utilsframework.android.network.retrofit.RetrofitTemplates;
 
 import org.greenrobot.eventbus.EventBus;
 
-import okhttp3.Cookie;
+import java.net.HttpCookie;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 public class CaptumiaApplication extends Application {
-    public static final String NONCE_HEADER = "X-WP-Nonce";
     private static CaptumiaApplication instance;
 
-    private RestApiClient restApiClient;
-    private OkHttpTokenAuthHandler authHandler;
+    private LoginHandler loginHandler;
+    private NetworkHandler networkHandler;
 
     @Override
     public void onCreate() {
         instance = this;
         super.onCreate();
 
-        initRestApiClient();
+        networkHandler = new NetworkHandler(this);
+        loginHandler = new LoginHandler(this);
         setupPicasso();
 
         new Thread() {
@@ -50,21 +52,6 @@ public class CaptumiaApplication extends Application {
         }.start();
     }
 
-    private void initRestApiClient() {
-        Retrofit.Builder builder = RetrofitTemplates.generateRetrofitWithJackson(
-                RestApiClient.BASE_URL);
-        OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
-        authHandler = new OkHttpTokenAuthHandler(clientBuilder, this);
-        authHandler.getAuthenticationInterceptor().setHeaderKey(NONCE_HEADER);
-        PersistentCookieJar cookieJar = new PersistentCookieJar(
-                new SetCookieCache(), new SharedPrefsCookiePersistor(this));
-        clientBuilder.cookieJar(cookieJar);
-        Retrofit retrofit = builder.client(
-                clientBuilder.build()).build();
-
-        restApiClient = retrofit.create(RestApiClient.class);
-    }
-
     private void setupPicasso() {
         Picasso.Builder picassoBuilder = new Picasso.Builder(this);
         picassoBuilder.listener(new Picasso.Listener() {
@@ -76,12 +63,12 @@ public class CaptumiaApplication extends Application {
         Picasso.setSingletonInstance(picassoBuilder.build());
     }
 
-    public OkHttpTokenAuthHandler getAuthHandler() {
-        return authHandler;
+    public LoginHandler getLoginHandler() {
+        return loginHandler;
     }
 
     public RestApiClient getRestApiClient() {
-        return restApiClient;
+        return networkHandler.getRestApiClient();
     }
 
     public static CaptumiaApplication getInstance() {
@@ -89,12 +76,20 @@ public class CaptumiaApplication extends Application {
     }
 
     public void logout() {
-        authHandler.logout();
+        loginHandler.logout();
         EventBus.getDefault().post(new LogoutEvent());
     }
 
-    public void login(String nonce) {
-        authHandler.login(nonce);
+    public void login(String username, String password) {
+        loginHandler.login(username, password);
         EventBus.getDefault().post(new LoginEvent());
+    }
+
+    public RetrofitRequestManagerFactory getRequestManagerFactory() {
+        return networkHandler.getRequestManagerFactory();
+    }
+
+    public NetworkHandler getNetworkHandler() {
+        return networkHandler;
     }
 }

@@ -3,31 +3,21 @@ package com.captumia.ui.forms;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.EditText;
 
-import com.captumia.CaptumiaApplication;
+import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
-import com.captumia.data.Nonce;
 import com.captumia.data.User;
 import com.captumia.ui.RequestManagerActivity;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.network.CancelStrategy;
 import com.utilsframework.android.network.ProgressDialogRequestListener;
-import com.utilsframework.android.network.RequestListener;
-import com.utilsframework.android.network.retrofit.CallProvider;
 import com.utilsframework.android.view.Toasts;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 
 public class LoginActivity extends RequestManagerActivity {
     @BindView(R.id.login_edit_text)
@@ -57,47 +47,25 @@ public class LoginActivity extends RequestManagerActivity {
             return;
         }
 
-        CallProvider<User> loginCall = new CallProvider<User>() {
-            @Override
-            public Call<User> getCall() {
-                return getRestApiClient().login(login, password);
-            }
-
-            @Override
-            public void onSuccess(User result) {
-                onUserIsReady(result);
-            }
-        };
-        CallProvider<Nonce> getNonceCall = new CallProvider<Nonce>() {
-            @Override
-            public Call<Nonce> getCall() {
-                return getRestApiClient().getNonce();
-            }
-
-            @Override
-            public void onSuccess(Nonce result) {
-                onNonceRetrieved(result.nonce);
-            }
-        };
-        List<CallProvider> calls = Arrays.<CallProvider>asList(loginCall, getNonceCall);
-
-        ProgressDialogRequestListener<List, Throwable> listener =
-                new ProgressDialogRequestListener<List, Throwable>(this, R.string.logging_loading) {
+        ProgressDialogRequestListener<User, Throwable> listener =
+                new ProgressDialogRequestListener<User, Throwable>(this, R.string.logging_loading) {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                         onLoginFailed(e);
                     }
+
+                    @Override
+                    public void onSuccess(User user) {
+                        onUserIsReady(user, login, password);
+                    }
                 };
-        getRequestManager().executeMultipleCalls(calls, listener, CancelStrategy.INTERRUPT);
+        Call<User> call = getRestApiClient().login(login, password);
+        getRequestManager().executeCall(call, listener, CancelStrategy.INTERRUPT);
     }
 
-    private void onUserIsReady(User user) {
-        this.user = user;
-    }
-
-    private void onNonceRetrieved(String nonce) {
-        CaptumiaApplication.getInstance().login(nonce);
+    private void onUserIsReady(User user, String login, String password) {
+        CaptumiaApplication.getInstance().login(login, password);
         Toasts.toast(this, R.string.hello_user_toast, "Ivan");
         finish();
     }

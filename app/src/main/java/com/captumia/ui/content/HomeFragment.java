@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.captumia.R;
 import com.captumia.data.Category;
 import com.captumia.network.HomeLazyLoadingList;
-import com.squareup.picasso.Picasso;
+import com.captumia.ui.UiUtils;
 import com.utils.framework.collections.LazyLoadingList;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.listview.ListViews;
@@ -23,11 +23,7 @@ public class HomeFragment extends CategoriesFragment {
         super.onViewCreated(view, savedInstanceState);
         ListView listView = (ListView) getListView();
         View header = ListViews.addHeader(listView, R.layout.home_header);
-
-        ImageView background = (ImageView) header.findViewById(R.id.background);
-        Picasso.with(getContext()).load(R.drawable.home_header_background)
-                .placeholder(R.drawable.rect_image_placeholder)
-                .into(background);
+        UiUtils.setupHeaderBackground(header);
 
         searchEditText = (EditText) view.findViewById(R.id.search_edit);
         view.findViewById(R.id.search_button).setOnClickListener(new View.OnClickListener() {

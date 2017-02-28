@@ -3,7 +3,7 @@ package com.captumia.ui;
 import com.captumia.R;
 import com.captumia.data.Post;
 import com.captumia.ui.adapters.PostsAdapter;
-import com.captumia.ui.content.PostFragment;
+import com.captumia.ui.content.ServiceFragment;
 import com.utilsframework.android.adapters.ViewArrayAdapter;
 
 public abstract class BasePostsFragment extends BaseLazyLoadingFragment<Post> {
@@ -14,7 +14,7 @@ public abstract class BasePostsFragment extends BaseLazyLoadingFragment<Post> {
 
     @Override
     protected void onListItemClicked(Post item, int position) {
-        PostFragment fragment = PostFragment.create(item, false);
+        ServiceFragment fragment = ServiceFragment.create(item, false);
         getNavigationInterface().replaceFragment(fragment, 1);
     }
 

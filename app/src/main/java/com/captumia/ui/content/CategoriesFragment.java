@@ -45,7 +45,7 @@ public class CategoriesFragment extends BaseLazyLoadingFragment<Category> {
 
     @Override
     protected int getRootLayout() {
-        return R.layout.categories;
+        return R.layout.lazy_loading_list_fragment;
     }
 
     @Override

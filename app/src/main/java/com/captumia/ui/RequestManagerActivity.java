@@ -5,18 +5,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.captumia.CaptumiaApplication;
-import com.captumia.R;
-import com.captumia.network.AppRequestManager;
+import com.captumia.app.CaptumiaApplication;
 import com.captumia.network.RestApiClient;
+import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
 public class RequestManagerActivity extends AppCompatActivity {
-    private AppRequestManager requestManager;
+    private RetrofitRequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestManager = new AppRequestManager();
+        requestManager = CaptumiaApplication.getInstance().getRequestManagerFactory().
+                createRequestManager();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true);
@@ -53,7 +53,7 @@ public class RequestManagerActivity extends AppCompatActivity {
         super.finish();
     }
 
-    public AppRequestManager getRequestManager() {
+    public RetrofitRequestManager getRequestManager() {
         return requestManager;
     }
 

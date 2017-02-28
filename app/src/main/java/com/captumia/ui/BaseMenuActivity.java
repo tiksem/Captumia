@@ -2,19 +2,20 @@ package com.captumia.ui;
 
 import android.os.Bundle;
 
-import com.captumia.CaptumiaApplication;
+import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
-import com.captumia.network.AppRequestManager;
 import com.captumia.network.RestApiClient;
 import com.utilsframework.android.navdrawer.NavigationDrawerMenuActivity;
+import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
 public abstract class BaseMenuActivity extends NavigationDrawerMenuActivity {
-    private AppRequestManager requestManager;
+    private RetrofitRequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestManager = new AppRequestManager();
+        requestManager = CaptumiaApplication.getInstance().getRequestManagerFactory().
+                createRequestManager();
     }
 
     @Override
@@ -36,7 +37,7 @@ public abstract class BaseMenuActivity extends NavigationDrawerMenuActivity {
         super.finish();
     }
 
-    public AppRequestManager getRequestManager() {
+    public RetrofitRequestManager getRequestManager() {
         return requestManager;
     }
 

@@ -25,7 +25,7 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
     }
 
     @Override
-    protected PostViewHolder createViewHolder(View view) {
+    protected PostViewHolder createViewHolder(View view, int itemViewType) {
         return new PostViewHolder(view);
     }
 

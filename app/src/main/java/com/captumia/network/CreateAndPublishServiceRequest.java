@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.captumia.R;
+import com.captumia.app.CaptumiaApplication;
+import com.captumia.app.NetworkHandler;
 import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Cookie;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -37,14 +40,19 @@ public class CreateAndPublishServiceRequest {
     private Context context;
     private RestApiClient restApiClient;
     private RetrofitRequestManager requestManager;
+    private int packageId;
+    private boolean isUserPackage;
     private ProgressDialog progressDialog;
     private ServicePublicationListener servicePublicationListener;
 
     public CreateAndPublishServiceRequest(Context context, RestApiClient restApiClient,
-                                          RetrofitRequestManager requestManager) {
+                                          RetrofitRequestManager requestManager, int packageId,
+                                          boolean isUserPackage) {
         this.context = context;
         this.restApiClient = restApiClient;
         this.requestManager = requestManager;
+        this.packageId = packageId;
+        this.isUserPackage = isUserPackage;
     }
 
     public void execute(Post post) {
@@ -82,6 +90,16 @@ public class CreateAndPublishServiceRequest {
                 });
 
         Integer region = post.getRegion() != null ? post.getRegion().getId() : null;
+
+
+        String packageIdString = String.valueOf(packageId);
+        Cookie chosenPackageCookie = NetworkHandler.keyValueCookie("chosen_package_id",
+                packageIdString);
+        Cookie isUserPackageCookie = NetworkHandler.keyValueCookie("chosen_package_is_user_package",
+                String.valueOf(isUserPackage));
+        NetworkHandler networkHandler = CaptumiaApplication.getInstance().getNetworkHandler();
+        networkHandler.addAdditionalCookie(chosenPackageCookie);
+        networkHandler.addAdditionalCookie(isUserPackageCookie);
 
         File coverImage = post.getCoverImage() != null ? new File(post.getCoverImage()) : null;
         Call<ResponseBody> call = restApiClient.createService(post.getTitle(),

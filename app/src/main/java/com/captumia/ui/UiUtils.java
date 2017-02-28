@@ -59,4 +59,11 @@ public class UiUtils {
             }
         });
     }
+
+    public static void setupHeaderBackground(View header) {
+        ImageView background = (ImageView) header.findViewById(R.id.background);
+        Picasso.with(background.getContext()).load(R.drawable.home_header_background)
+                .placeholder(R.drawable.rect_image_placeholder)
+                .into(background);
+    }
 }

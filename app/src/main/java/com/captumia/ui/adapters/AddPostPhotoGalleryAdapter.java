@@ -27,7 +27,7 @@ public class AddPostPhotoGalleryAdapter extends ViewArrayAdapter<File, AddPostGa
     }
 
     @Override
-    protected AddPostGalleryItemHolder createViewHolder(View view) {
+    protected AddPostGalleryItemHolder createViewHolder(View view, int itemViewType) {
         return new AddPostGalleryItemHolder(view);
     }
 

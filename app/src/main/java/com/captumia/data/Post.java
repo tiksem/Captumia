@@ -23,14 +23,11 @@ import java.util.regex.Pattern;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class Post implements Parcelable {
+public class Post extends BasePost implements Parcelable {
     private static final Pattern GALLERY_IMAGE_PATTERN = Pattern.compile("\"([^\"]+)\"");
 
-    private int id;
     @JsonProperty("better_featured_image")
     private Media media;
-    @JsonIgnore
-    private String title;
     @JsonIgnore
     private String phone;
     @JsonIgnore
@@ -55,27 +52,9 @@ public class Post implements Parcelable {
     @JsonIgnore
     private Category category;
 
-    @JsonSetter("title")
-    public void setTitleFromJson(JsonNode jsonNode) {
-        title = jsonNode.get("rendered").asText();
-    }
-
-    private String getStringField(JsonNode fields, String key) {
-        JsonNode array = fields.get(key);
-        if (array != null && array.size() > 0) {
-            String value = array.get(0).asText();
-            if (Strings.isEmpty(value)) {
-                return null;
-            }
-
-            return value;
-        }
-
-        return null;
-    }
-
     @JsonSetter("__fields")
     public void setFieldsFromJson(JsonNode node) {
+        super.setFieldsFromJson(node);
         phone = getStringField(node, "_phone");
 
         String streetNumber = getStringField(node, "geolocation_street_number");
@@ -106,24 +85,12 @@ public class Post implements Parcelable {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Media getMedia() {
         return media;
     }
 
     public void setMedia(Media media) {
         this.media = media;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getPhone() {
@@ -153,10 +120,6 @@ public class Post implements Parcelable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setPhone(String phone) {
@@ -261,14 +224,13 @@ public class Post implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        super.writeToParcel(dest, flags);
         dest.writeParcelable(this.media, flags);
-        dest.writeString(this.title);
         dest.writeString(this.phone);
         dest.writeStringList(this.address);
         dest.writeStringList(this.photos);
         dest.writeString(this.description);
-        dest.writeList(this.tags);
+        dest.writeTypedList(this.tags);
         dest.writeString(this.email);
         dest.writeString(this.website);
         dest.writeString(this.videoUrl);
@@ -279,15 +241,13 @@ public class Post implements Parcelable {
     }
 
     protected Post(Parcel in) {
-        this.id = in.readInt();
+        super(in);
         this.media = in.readParcelable(Media.class.getClassLoader());
-        this.title = in.readString();
         this.phone = in.readString();
         this.address = in.createStringArrayList();
         this.photos = in.createStringArrayList();
         this.description = in.readString();
-        this.tags = new ArrayList<Tag>();
-        in.readList(this.tags, Tag.class.getClassLoader());
+        this.tags = in.createTypedArrayList(Tag.CREATOR);
         this.email = in.readString();
         this.website = in.readString();
         this.videoUrl = in.readString();

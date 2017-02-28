@@ -1,6 +1,5 @@
-package com.captumia.network;
+package com.captumia.app;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.utilsframework.android.json.Json;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
@@ -8,7 +7,7 @@ import java.io.IOException;
 
 import retrofit2.Response;
 
-public class AppRequestManager extends RetrofitRequestManager {
+class AppRequestManager extends RetrofitRequestManager {
     @Override
     protected <T> Object getHttpResponseExceptionData(Response<T> response) throws IOException {
         String body = response.errorBody().string();

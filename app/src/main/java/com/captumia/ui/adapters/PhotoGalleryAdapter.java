@@ -25,7 +25,7 @@ public class PhotoGalleryAdapter extends ViewArrayAdapter<String, ImageView> {
     }
 
     @Override
-    protected ImageView createViewHolder(View view) {
+    protected ImageView createViewHolder(View view, int itemViewType) {
         return (ImageView) view.findViewById(R.id.image);
     }
 

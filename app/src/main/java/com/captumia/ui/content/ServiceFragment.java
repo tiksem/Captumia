@@ -12,16 +12,16 @@ import android.widget.AbsListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.captumia.CaptumiaApplication;
+import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.data.Media;
 import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
-import com.captumia.network.AppRequestManager;
 import com.captumia.network.CreateAndPublishServiceRequest;
 import com.captumia.network.RestApiClient;
 import com.captumia.network.ServicePublicationListener;
+import com.captumia.ui.forms.AddServiceActivityInterface;
 import com.captumia.ui.forms.BookServiceActivity;
 import com.captumia.ui.UiUtils;
 import com.captumia.ui.forms.WriteReviewActivity;
@@ -29,33 +29,18 @@ import com.captumia.ui.adapters.PhotoGalleryAdapter;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.captumia.ui.imgtransform.DarkenImageTransformation;
 import com.squareup.picasso.Picasso;
-import com.utils.framework.CollectionUtils;
 import com.utils.framework.Lists;
-import com.utils.framework.Transformer;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.fragments.RequestManagerFragment;
 import com.utilsframework.android.navdrawer.NavigationActivityInterface;
-import com.utilsframework.android.network.CancelStrategy;
-import com.utilsframework.android.network.ProgressDialogRequestListener;
-import com.utilsframework.android.network.retrofit.RequestBodies;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.Alerts;
 import com.utilsframework.android.view.GuiUtilities;
-import com.utilsframework.android.view.Toasts;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-
-public class PostFragment extends RequestManagerFragment implements ServicePublicationListener {
+public class ServiceFragment extends RequestManagerFragment implements ServicePublicationListener {
     public static final String POST = "post";
     public static final String PREVIEW_MODE = "previewMode";
 
@@ -133,8 +118,11 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
 
     private void onPublish() {
         publishButton.setEnabled(false);
+        AddServiceActivityInterface activityInterface = getActivityInterface();
         CreateAndPublishServiceRequest request = new CreateAndPublishServiceRequest(getContext(),
-                getRestApiClient(), getRequestManager());
+                getRestApiClient(), getRequestManager(),
+                activityInterface.getSelectedPackage(),
+                activityInterface.isUserPackage());
         request.setServicePublicationListener(this);
         request.execute(post);
     }
@@ -151,10 +139,6 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
     public void onServicePublicationError() {
         getActivity().onBackPressed();
         publishButton.setEnabled(true);
-    }
-
-    private void onServiceSuccessfullyPublished() {
-
     }
 
     private boolean isPreviewMode() {
@@ -220,8 +204,8 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
 
             UiUtils.loadImageWithCenterCrop(Picasso.with(context).load(
                     displayInListUrl).
-                            transform(new DarkenImageTransformation(getContext()))
-                            .placeholder(R.drawable.rect_image_placeholder), holder.image);
+                    transform(new DarkenImageTransformation(getContext()))
+                    .placeholder(R.drawable.rect_image_placeholder), holder.image);
         }
     }
 
@@ -232,11 +216,11 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
         photosListView.setAdapter(adapter);
     }
 
-    public static PostFragment create(Post post, boolean previewMode) {
+    public static ServiceFragment create(Post post, boolean previewMode) {
         Bundle args = new Bundle();
         args.putParcelable(POST, post);
         args.putBoolean(PREVIEW_MODE, previewMode);
-        PostFragment fragment = new PostFragment();
+        ServiceFragment fragment = new ServiceFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -249,7 +233,7 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
 
     @Override
     protected RetrofitRequestManager obtainRequestManager() {
-        return new AppRequestManager();
+        return CaptumiaApplication.getInstance().getRequestManagerFactory().createRequestManager();
     }
 
     public NavigationActivityInterface getNavigationInterface() {
@@ -258,5 +242,9 @@ public class PostFragment extends RequestManagerFragment implements ServicePubli
 
     public RestApiClient getRestApiClient() {
         return CaptumiaApplication.getInstance().getRestApiClient();
+    }
+
+    public AddServiceActivityInterface getActivityInterface() {
+        return (AddServiceActivityInterface) getActivity();
     }
 }

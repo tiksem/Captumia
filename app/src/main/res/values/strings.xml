@@ -65,7 +65,7 @@
     <string name="add_post_gallery_title">Gallery Images (optional)</string>
     <string name="empty_login">Enter login</string>
     <string name="empty_password">Enter password</string>
-    <string name="logging_loading">Signing in...</string>
+    <string name="logging_loading">Signing in…</string>
     <string name="hello_user_toast">Hello, %s!</string>
     <string name="log_out">Log out</string>
     <string name="description">Description</string>
@@ -79,7 +79,13 @@
     <string name="empty_name">Service name should not be empty</string>
     <string name="empty_email">Email should not be empty</string>
     <string name="available_on">Available on</string>
-    <string name="saving_changes">Saving changes...</string>
+    <string name="saving_changes">Saving changes…</string>
     <string name="unknown_error">Unknown error. Please contact support.</string>
     <string name="service_submitted_message">Service submitted successfully. Your service will be visible once approved.</string>
+    <string name="your_packages">Your Packages:</string>
+    <string name="add_service_header_title">Add Service</string>
+    <string name="purchase_packages">Purchase Package:</string>
+    <string name="packages_title">Select a Package</string>
+    <string name="limited_package_description" formatted="false">%d EGP for %d listings</string>
+    <string name="unlimited_package_description" formatted="false">%d EGP for unlimited listings listed for %d days</string>
 </resources>
