@@ -38,6 +38,11 @@ public class PackagesLazyLoadingList extends
             }
         });
 
+        if (list.isEmpty()) {
+            isFirstPage = false;
+            return list;
+        }
+
         if (isFirstPage) {
             for (PackageSubscription subscription : list) {
                 subscription.setIsUserPackage(true);

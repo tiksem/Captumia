@@ -28,25 +28,18 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class NetworkHandler {
+    public static final String LOGGED_IN_COOKIE_TOKEN = "wordpress_logged_in_";
+
     private final MyRetrofitRequestManagerFactory requestManagerFactory;
     private final RestApiClient restApiClient;
     private final SharedPrefsCookiePersistor persistedCookies;
-    private List<Cookie> additionalCookies = new ArrayList<>();
 
     public NetworkHandler(Context context) {
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         persistedCookies = new SharedPrefsCookiePersistor(context);
 
         PersistentCookieJar cookieJar = new PersistentCookieJar(
-                new SetCookieCache(), persistedCookies) {
-            @Override
-            public synchronized List<Cookie> loadForRequest(HttpUrl url) {
-                List<Cookie> cookies = new ArrayList<>(super.loadForRequest(url));
-                Cookies.removeExpiredCookies(additionalCookies);
-                cookies.addAll(additionalCookies);
-                return cookies;
-            }
-        };
+                new SetCookieCache(), persistedCookies);
         clientBuilder.cookieJar(cookieJar);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -71,12 +64,16 @@ public class NetworkHandler {
         persistedCookies.removeAll(Collections.singletonList(loginCookie));
     }
 
+    public SharedPrefsCookiePersistor getPersistedCookies() {
+        return persistedCookies;
+    }
+
     private Cookie getLoginCookie() {
         List<Cookie> cookies = persistedCookies.loadAll();
         return CollectionUtils.find(cookies, new Predicate<Cookie>() {
             @Override
             public boolean check(Cookie item) {
-                return item.name().startsWith("wordpress_logged_in_");
+                return item.name().startsWith(LOGGED_IN_COOKIE_TOKEN);
             }
         });
     }
@@ -87,14 +84,6 @@ public class NetworkHandler {
 
     public RestApiClient getRestApiClient() {
         return restApiClient;
-    }
-
-    public void addAdditionalCookie(Cookie cookie) {
-        additionalCookies.add(cookie);
-    }
-
-    public void removeAdditionalCookies(Cookie cookie) {
-        additionalCookies.remove(cookie);
     }
 
     public static Cookie keyValueCookie(String key, String value) {

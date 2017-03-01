@@ -1,4 +1,4 @@
-package com.captumia.ui.forms;
+package com.captumia.ui.forms.loginregister;
 
 import android.content.Context;
 import android.content.Intent;

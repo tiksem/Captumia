@@ -27,14 +27,15 @@
             >
         </activity>
 
-        <activity android:name=".ui.forms.LoginActivity"
+        <activity android:name=".ui.forms.loginregister.LoginActivity"
+                  android:launchMode="singleTask"
                   android:label="@string/login"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >
         </activity>
 
-        <activity android:name=".ui.forms.BusinessRegisterActivity"
+        <activity android:name=".ui.forms.loginregister.BusinessRegisterActivity"
                   android:label="@string/business_registration"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
@@ -56,6 +57,13 @@
 
         <activity android:name="com.utilsframework.android.web.WebViewActivity"
                   android:label="@string/add_service"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/ActionBarActivityTheme"
+            >
+        </activity>
+
+        <activity android:name=".ui.forms.loginregister.FaceBookLoginWebViewActivity"
+                  android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:theme="@style/ActionBarActivityTheme"
             >

@@ -1,6 +1,7 @@
 package com.captumia.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class User {
     @JsonProperty("ID")
@@ -13,6 +14,11 @@ public class User {
     }
 
     public void setId(int id) {
+        this.id = id;
+    }
+
+    @JsonSetter("id")
+    public void setIdFromId(int id) {
         this.id = id;
     }
 

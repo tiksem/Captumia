@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.captumia.events.LogoutEvent;
-import com.captumia.ui.forms.LoginActivity;
+import com.captumia.ui.forms.loginregister.LoginActivity;
 import com.utilsframework.android.network.retrofit.LoginResponseErrorInterceptor;
 
 import org.greenrobot.eventbus.EventBus;

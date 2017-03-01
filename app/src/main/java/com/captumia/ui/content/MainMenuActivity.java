@@ -2,7 +2,6 @@ package com.captumia.ui.content;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.captumia.app.CaptumiaApplication;
@@ -10,24 +9,14 @@ import com.captumia.R;
 import com.captumia.events.LoginEvent;
 import com.captumia.events.LogoutEvent;
 import com.captumia.ui.BaseMenuActivity;
-import com.captumia.ui.forms.BusinessRegisterActivity;
-import com.captumia.ui.forms.LoginActivity;
+import com.captumia.ui.forms.loginregister.BusinessRegisterActivity;
+import com.captumia.ui.forms.loginregister.LoginActivity;
 import com.captumia.ui.MainMenuFragmentsFactory;
 import com.utilsframework.android.navdrawer.FragmentFactory;
 import com.utilsframework.android.navdrawer.NavigationViewMenuAdapter;
-import com.utilsframework.android.network.CancelStrategy;
-import com.utilsframework.android.network.ProgressDialogRequestListener;
-import com.utilsframework.android.view.Alerts;
-import com.utilsframework.android.view.Toasts;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class MainMenuActivity extends BaseMenuActivity {
 

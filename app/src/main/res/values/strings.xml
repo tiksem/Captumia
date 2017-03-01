@@ -92,4 +92,6 @@
     <string name="select_service_region">Select service region</string>
     <string name="create_service">Create Service</string>
     <string name="publish_service">Publish Service</string>
+    <string name="login_with_facebook">Login/Register with Facebook</string>
+    <string name="login_with_facebook_failed">Login with facebook failed</string>
 </resources>

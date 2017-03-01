@@ -87,6 +87,10 @@ public interface RestApiClient {
     @POST("wp-json/custom/login")
     Call<User> login(@Field("username") String login,
                      @Field("password") String password);
+
+    @GET("wp-json/wp/v2/users/me")
+    Call<User> me();
+
     @GET("wp-json/custom/test")
     Call<ResponseBody> test();
     @GET("wp-json/custom/get_nonce")
