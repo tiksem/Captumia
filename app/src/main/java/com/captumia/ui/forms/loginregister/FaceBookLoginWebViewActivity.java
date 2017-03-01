@@ -37,32 +37,35 @@ public class FaceBookLoginWebViewActivity extends WebViewActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
-                if (url.contains(RestApiClient.DOMAIN) && !url.contains("facebook")) {
-                    String cookieString = CookieManager.getInstance().getCookie(url);
-                    String loginCookie = Strings.findStringStartedWith(
-                            NetworkHandler.LOGGED_IN_COOKIE_TOKEN, cookieString);
-                    Cookie cookie = null;
-                    if (loginCookie != null) {
-                        Cookie parsedCookie = Cookie.parse(HttpUrl.parse(url), loginCookie);
-                        SharedPrefsCookiePersistor cookiesStore = CaptumiaApplication.
-                                getInstance().getNetworkHandler().getPersistedCookies();
-                        cookie = new Cookie.Builder()
-                                .name(parsedCookie.name())
-                                .domain(parsedCookie.domain())
-                                .expiresAt(System.currentTimeMillis() +
-                                        LOGIN_COOKIE_EXPIRATION_TIME)
-                                .path("/")
-                                .value(parsedCookie.value()).build();
-                        cookiesStore.saveAll(Collections.singleton(cookie));
-                    }
-
-                    finish();
-                    EventBus.getDefault().post(new FacebookLoginFinished(cookie));
-                }
+                FaceBookLoginWebViewActivity.this.onPageFinished(url);
             }
         });
         getWebView().loadUrl(FACEBOOK_LOGIN_URL);
+    }
+
+    private void onPageFinished(String url) {
+        if (url.contains(RestApiClient.DOMAIN) && !url.contains("facebook")) {
+            String cookieString = CookieManager.getInstance().getCookie(url);
+            String loginCookie = Strings.findStringStartedWith(
+                    NetworkHandler.LOGGED_IN_COOKIE_TOKEN, cookieString);
+            Cookie cookie = null;
+            if (loginCookie != null) {
+                Cookie parsedCookie = Cookie.parse(HttpUrl.parse(url), loginCookie);
+                SharedPrefsCookiePersistor cookiesStore = CaptumiaApplication.
+                        getInstance().getNetworkHandler().getPersistedCookies();
+                cookie = new Cookie.Builder()
+                        .name(parsedCookie.name())
+                        .domain(parsedCookie.domain())
+                        .expiresAt(System.currentTimeMillis() +
+                                LOGIN_COOKIE_EXPIRATION_TIME)
+                        .path("/")
+                        .value(parsedCookie.value()).build();
+                cookiesStore.saveAll(Collections.singleton(cookie));
+            }
+
+            finish();
+            EventBus.getDefault().post(new FacebookLoginFinished(cookie));
+        }
     }
 
     public static void start(Context context) {
