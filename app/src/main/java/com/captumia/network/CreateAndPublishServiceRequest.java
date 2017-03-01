@@ -1,5 +1,6 @@
 package com.captumia.network;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 
@@ -9,13 +10,18 @@ import com.captumia.app.NetworkHandler;
 import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
+import com.utils.framework.ArrayUtils;
 import com.utils.framework.CollectionUtils;
+import com.utils.framework.Lists;
 import com.utils.framework.Transformer;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.network.CancelStrategy;
+import com.utilsframework.android.network.ProgressDialogRequestListener;
 import com.utilsframework.android.network.RequestListener;
 import com.utilsframework.android.network.retrofit.RequestBodies;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
+import com.utilsframework.android.threading.MainThreadExecutor;
+import com.utilsframework.android.view.Alerts;
 import com.utilsframework.android.view.Toasts;
 import com.utilsframework.android.web.WebViewActivity;
 
@@ -27,32 +33,24 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Cookie;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class CreateAndPublishServiceRequest {
-    public static final String PUBLISH_STEP = "2";
-    public static final String PREVIEW_STEP = "1";
-    public static final String FORM_NAME = "submit-job";
-    public static final String DEFAULT_JOB_ID = "0";
-
-    private Context context;
+    private Activity activity;
     private RestApiClient restApiClient;
     private RetrofitRequestManager requestManager;
-    private int packageId;
-    private boolean isUserPackage;
-    private ProgressDialog progressDialog;
     private ServicePublicationListener servicePublicationListener;
 
-    public CreateAndPublishServiceRequest(Context context, RestApiClient restApiClient,
-                                          RetrofitRequestManager requestManager, int packageId,
-                                          boolean isUserPackage) {
-        this.context = context;
+    public CreateAndPublishServiceRequest(Activity activity, RestApiClient restApiClient,
+                                          RetrofitRequestManager requestManager,
+                                          int selectedPackage, boolean userPackage) {
+        this.activity = activity;
         this.restApiClient = restApiClient;
         this.requestManager = requestManager;
-        this.packageId = packageId;
-        this.isUserPackage = isUserPackage;
     }
 
     public void execute(Post post) {
@@ -81,61 +79,45 @@ public class CreateAndPublishServiceRequest {
             operatingHours.put(endKey, RequestBodies.fromString(item.getEndTime()));
         }
 
-        List<File> photos = CollectionUtils.transform(post.getPhotos(),
-                new Transformer<String, File>() {
-                    @Override
-                    public File get(String s) {
-                        return new File(s);
-                    }
-                });
+        List<String> photos = post.getPhotos();
+        MultipartBody.Part[] galleryImages = new MultipartBody.Part[0];
+        if (!Lists.isEmpty(photos)) {
+            galleryImages = new MultipartBody.Part[photos.size()];
+            for (int i = 0; i < galleryImages.length; i++) {
+                galleryImages[i] = RequestBodies.imagePartFromFilePath("gallery_images[]",
+                        photos.get(i));
+            }
+        }
 
         Integer region = post.getRegion() != null ? post.getRegion().getId() : null;
 
-
-        String packageIdString = String.valueOf(packageId);
-        Cookie chosenPackageCookie = NetworkHandler.keyValueCookie("chosen_package_id",
-                packageIdString);
-        Cookie isUserPackageCookie = NetworkHandler.keyValueCookie("chosen_package_is_user_package",
-                String.valueOf(isUserPackage));
-        NetworkHandler networkHandler = CaptumiaApplication.getInstance().getNetworkHandler();
-        networkHandler.addAdditionalCookie(chosenPackageCookie);
-        networkHandler.addAdditionalCookie(isUserPackageCookie);
-
-        File coverImage = post.getCoverImage() != null ? new File(post.getCoverImage()) : null;
-        Call<ResponseBody> call = restApiClient.createService(post.getTitle(),
+        MultipartBody.Part coverImage = RequestBodies.imagePartFromFilePath("featured_image",
+                post.getCoverImage());
+        Call<Post> call = restApiClient.createService(post.getTitle(),
                 region,
                 post.getEmail(),
                 Arrays.asList(post.getCategory().getId()),
                 tags,
                 operatingHours,
                 coverImage,
-                photos,
+                galleryImages,
                 post.getDescription(),
                 post.getWebsite(),
                 post.getPhone(),
-                post.getVideoUrl(),
-                DEFAULT_JOB_ID,
-                FORM_NAME,
-                PREVIEW_STEP);
+                post.getVideoUrl());
 
 
-        progressDialog = ProgressDialog.show(context, null, context.getString(R.string.saving_changes));
-        RequestListener<ResponseBody, Throwable> listener =
-                new RequestListener<ResponseBody, Throwable>() {
+        RequestListener<Post, Throwable> listener =
+                new ProgressDialogRequestListener<Post, Throwable>(
+                        activity, R.string.saving_changes) {
                     @Override
-                    public void onSuccess(ResponseBody responseBody) {
+                    public void onSuccess(Post responseBody) {
                         onServiceCreatingFinished(responseBody);
                     }
 
                     @Override
-                    public void onCanceled() {
-                        progressDialog.hide();
-                    }
-
-                    @Override
                     public void onError(Throwable e) {
-                        Toasts.toast(context, e.getMessage());
-                        progressDialog.hide();
+                        Toasts.toast(activity, e.getMessage());
                         executeErrorListener();
                     }
                 };
@@ -143,57 +125,14 @@ public class CreateAndPublishServiceRequest {
                 CancelStrategy.INTERRUPT);
     }
 
-    private void onServiceCreatingFinished(ResponseBody responseBody) {
-        try {
-            String body = responseBody.string();
-            WebViewActivity.loadHtml(context, body);
-            String error = Strings.getFirstStringBetweenQuotes(body,
-                    "class=\"job-manager-error\">", "</");
-            if (!Strings.isEmpty(error)) {
-                Toasts.toast(context, error);
-                progressDialog.hide();
-                executeErrorListener();
-            } else {
-                onServiceCreated(body);
-            }
-        } catch (IOException e) {
-            Toasts.toast(context, e.getMessage());
-            progressDialog.hide();
-            executeErrorListener();
+    private void onServiceCreatingFinished(Post post) {
+        if (servicePublicationListener != null) {
+            servicePublicationListener.onServicePublished();
         }
     }
 
     public void setServicePublicationListener(ServicePublicationListener servicePublicationListener) {
         this.servicePublicationListener = servicePublicationListener;
-    }
-
-    private void onServiceCreated(String body) {
-        String jobId = Strings.getFirstStringBetweenQuotes(body, "name=\"job_id\" value=\"", "\" />");
-        if (jobId == null || jobId.equals("0")) {
-            Toasts.toast(context, R.string.unknown_error);
-            progressDialog.hide();
-            return;
-        }
-        Call<ResponseBody> call = restApiClient.publishService(jobId, PUBLISH_STEP, FORM_NAME);
-        requestManager.executeCall(call, new RequestListener<ResponseBody, Throwable>() {
-            @Override
-            public void onAfterCompleteOrCanceled() {
-                progressDialog.hide();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Toasts.toast(context, R.string.unknown_error);
-                executeErrorListener();
-            }
-
-            @Override
-            public void onSuccess(ResponseBody responseBody) {
-                if (servicePublicationListener != null) {
-                    servicePublicationListener.onServicePublished();
-                }
-            }
-        }, CancelStrategy.INTERRUPT);
     }
 
     private void executeErrorListener() {

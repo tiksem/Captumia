@@ -33,14 +33,16 @@ import com.utils.framework.Lists;
 import com.utils.framework.strings.Strings;
 import com.utilsframework.android.fragments.Fragments;
 import com.utilsframework.android.fragments.RequestManagerFragment;
-import com.utilsframework.android.navdrawer.NavigationActivityInterface;
+import com.utilsframework.android.navdrawer.ActionBarTitleProvider;
+import com.utilsframework.android.navdrawer.FragmentsNavigationInterface;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.Alerts;
 import com.utilsframework.android.view.GuiUtilities;
 
 import java.util.List;
 
-public class ServiceFragment extends RequestManagerFragment implements ServicePublicationListener {
+public class ServiceFragment extends RequestManagerFragment implements ServicePublicationListener,
+        ActionBarTitleProvider {
     public static final String POST = "post";
     public static final String PREVIEW_MODE = "previewMode";
 
@@ -119,7 +121,7 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
     private void onPublish() {
         publishButton.setEnabled(false);
         AddServiceActivityInterface activityInterface = getActivityInterface();
-        CreateAndPublishServiceRequest request = new CreateAndPublishServiceRequest(getContext(),
+        CreateAndPublishServiceRequest request = new CreateAndPublishServiceRequest(getActivity(),
                 getRestApiClient(), getRequestManager(),
                 activityInterface.getSelectedPackage(),
                 activityInterface.isUserPackage());
@@ -129,10 +131,16 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
 
     @Override
     public void onServicePublished() {
-        Alerts.showOkButtonAlert(getContext().getApplicationContext(),
-                R.string.service_submitted_message);
-        getActivity().finish();
-        publishButton.setEnabled(true);
+        Alerts.showOkButtonAlert(new Alerts.OkAlertSettings(getActivity()) {
+            {
+                setMessage(R.string.service_submitted_message);
+            }
+
+            @Override
+            public void onDismiss() {
+                getActivity().finish();
+            }
+        });
     }
 
     @Override
@@ -236,8 +244,8 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
         return CaptumiaApplication.getInstance().getRequestManagerFactory().createRequestManager();
     }
 
-    public NavigationActivityInterface getNavigationInterface() {
-        return (NavigationActivityInterface) getActivity();
+    public FragmentsNavigationInterface getNavigationInterface() {
+        return (FragmentsNavigationInterface) getActivity();
     }
 
     public RestApiClient getRestApiClient() {
@@ -246,5 +254,14 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
 
     public AddServiceActivityInterface getActivityInterface() {
         return (AddServiceActivityInterface) getActivity();
+    }
+
+    @Override
+    public String getActionBarTitle() {
+        if (isPreviewMode()) {
+            return getString(R.string.publish_service);
+        }
+
+        return null;
     }
 }

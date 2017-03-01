@@ -1,5 +1,6 @@
 package com.captumia.ui.forms;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.captumia.ui.content.ServiceFragment;
 import com.squareup.picasso.Picasso;
 import com.utils.framework.CollectionUtils;
 import com.utils.framework.Transformer;
+import com.utilsframework.android.navdrawer.ActionBarTitleProvider;
 import com.utilsframework.android.network.retrofit.CallProvider;
 import com.utilsframework.android.view.GuiUtilities;
 import com.utilsframework.android.view.Toasts;
@@ -45,7 +47,8 @@ import butterknife.OnClick;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import retrofit2.Call;
 
-public class ServiceFromFragment extends BasePageLoadingFragment implements EasyImage.Callbacks {
+public class AddServiceFormFragment extends BasePageLoadingFragment implements EasyImage.Callbacks,
+        ActionBarTitleProvider {
     private static final int COVER_IMAGE_PICK = 0;
     private static final int GALLERY_IMAGE_PICK = 1;
 
@@ -54,7 +57,6 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
     @BindView(R.id.category)
     Spinner categorySpinner;
     private List<Spinner> operatingHoursSpinners;
-    @BindView(R.id.cover_image)
     ImageView coverImageView;
     @BindView(R.id.cover_image_container)
     View coverImageContainer;
@@ -79,18 +81,27 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
     private SelectRegionAdapter regionAdapter;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ButterKnife.bind(view);
+        ButterKnife.bind(this, view);
 
         setupOperationHoursViews(view);
         setupCoverImage(view);
 
+        if (photoGalleryAdapter == null) {
+            photoGalleryAdapter = new AddPostPhotoGalleryAdapter(getContext());
+            photoGalleryAdapter.setElements(new ArrayList<File>());
+        }
         AbsListView photoGalleryView = (AbsListView) view.findViewById(R.id.photo_gallery_list);
-        photoGalleryAdapter = new AddPostPhotoGalleryAdapter(getContext());
-        photoGalleryAdapter.setElements(new ArrayList<File>());
         photoGalleryView.setAdapter(photoGalleryAdapter);
+
+        UiUtils.setupHeaderBackground(view);
     }
 
     @OnClick(R.id.preview)
@@ -108,7 +119,7 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
             Toasts.toast(getContext(), R.string.empty_email);
             return;
         }
-        post.setTitle(email);
+        post.setEmail(email);
 
         String description = descriptionView.getText().toString();
         if (description.isEmpty()) {
@@ -120,7 +131,6 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
         post.setPhone(phoneView.getText().toString());
 
         String location = locationView.getText().toString();
-        List<String> address = new ArrayList<>();
         if (!location.isEmpty()) {
             post.setLocation(location);
         }
@@ -128,6 +138,9 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
         if (regionPosition != 0) {
             Region region = regionAdapter.getElement(regionPosition);
             post.setRegion(region);
+        } else {
+            Toasts.toast(getContext(), R.string.select_service_region);
+            return;
         }
 
         if (coverImage != null) {
@@ -360,6 +373,11 @@ public class ServiceFromFragment extends BasePageLoadingFragment implements Easy
         } else if(type == GALLERY_IMAGE_PICK) {
             photoGalleryAdapter.addElements(imageFiles);
         }
+    }
+
+    @Override
+    public String getActionBarTitle() {
+        return getString(R.string.create_service);
     }
 
     @Override

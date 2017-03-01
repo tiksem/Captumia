@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -68,28 +69,19 @@ public interface RestApiClient {
                                     @Field("password") String password);
 
     @Multipart
-    @POST("add-your-listing/")
-    Call<ResponseBody> createService(@Part("job_title") String title,
-                                     @Part("job_region") Integer region,
-                                     @Part("application") String email,
-                                     @Part("job_category[]") List<Integer> categories,
-                                     @Part("tax_input[job_listing_tag][]") List<Integer> tags,
-                                     @PartMap Map<String, RequestBody> operatingHours,
-                                     @Part("featured_image") File coverImage,
-                                     @Part("gallery_images[]") List<File> galleryImages,
-                                     @Part("job_description") String description,
-                                     @Part("company_website") String webSite,
-                                     @Part("phone") String phone,
-                                     @Part("company_video") String video,
-                                     @Part("job_id") String jobId,
-                                     @Part("job_manager_form") String formName,
-                                     @Part("step") String step);
-
-    @FormUrlEncoded
-    @POST("add-your-listing/")
-    Call<ResponseBody> publishService(@Field("job_id") String jobId,
-                                      @Field("step") String step,
-                                      @Field("job_manager_form") String formName);
+    @POST("wp-json/custom/create_post")
+    Call<Post> createService(@Part("title") String title,
+                             @Part("region") Integer region,
+                             @Part("email") String email,
+                             @Part("category") List<Integer> categories,
+                             @Part("tags[]") List<Integer> tags,
+                             @PartMap Map<String, RequestBody> operatingHours,
+                             @Part MultipartBody.Part coverImage,
+                             @Part MultipartBody.Part[] galleryImages,
+                             @Part("description") String description,
+                             @Part("company_website") String webSite,
+                             @Part("phone") String phone,
+                             @Part("company_video") String video);
 
     @FormUrlEncoded
     @POST("wp-json/custom/login")

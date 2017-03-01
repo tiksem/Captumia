@@ -17,6 +17,7 @@ import retrofit2.Call;
 public class PackagesLazyLoadingList extends
         MultipleCallsOnePageRetrofitLazyLoadingList<Object, PackageSubscription> {
     private RestApiClient restApiClient;
+    private boolean isFirstPage = true;
 
     public PackagesLazyLoadingList(RetrofitRequestManager requestManager, RestApiClient restApiClient) {
         super(requestManager);
@@ -37,7 +38,6 @@ public class PackagesLazyLoadingList extends
             }
         });
 
-        boolean isFirstPage = getLoadedElementsCount() == 0;
         if (isFirstPage) {
             for (PackageSubscription subscription : list) {
                 subscription.setIsUserPackage(true);
@@ -46,6 +46,7 @@ public class PackagesLazyLoadingList extends
 
         Object header = isFirstPage ? PackageSubscription.YOUR_PACKAGES_HEADER
                 : PackageSubscription.PURCHASE_PACKAGES_HEADER;
+        isFirstPage = false;
         return Lists.listWithAddingElementToFront((List)list, header);
     }
 }

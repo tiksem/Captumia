@@ -20,9 +20,12 @@ public class Media implements Parcelable {
 
     @JsonSetter("media_details")
     public void setImageDetails(JsonNode jsonNode) {
-        JsonNode largeNode = jsonNode.get("sizes").get("large");
-        if (largeNode != null) {
-            displayInListUrl = largeNode.get("source_url").asText();
+        JsonNode sizes = jsonNode.get("sizes");
+        if (sizes != null) {
+            JsonNode largeNode = sizes.get("large");
+            if (largeNode != null) {
+                displayInListUrl = largeNode.get("source_url").asText();
+            }
         }
     }
 

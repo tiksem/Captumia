@@ -20,7 +20,7 @@ import com.utilsframework.android.view.listview.ListViews;
 public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
         implements ActionBarTitleProvider {
 
-    private ServiceFromFragment serviceFromFragment;
+    private AddServiceFormFragment addServiceFormFragment;
     private PackagesAdapter packagesAdapter;
 
     @Override
@@ -40,10 +40,10 @@ public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
     private void onPackageSelected(PackageSubscription packageSubscription) {
         getActivityInterface().setSelectedPackage(packageSubscription.getId(),
                 packageSubscription.isUserPackage());
-        if (serviceFromFragment == null) {
-            serviceFromFragment = new ServiceFromFragment();
+        if (addServiceFormFragment == null) {
+            addServiceFormFragment = new AddServiceFormFragment();
         }
-        getNavigationInterface().replaceFragment(serviceFromFragment, 1);
+        getNavigationInterface().replaceFragment(addServiceFormFragment, 1);
         packagesAdapter.setSelectedPackageId(packageSubscription.getId(),
                 packageSubscription.isUserPackage());
     }

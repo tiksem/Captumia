@@ -89,4 +89,7 @@
     <string name="limited_package_description" formatted="false">%d EGP for %d listings</string>
     <string name="unlimited_package_description" formatted="false">%d EGP for unlimited listings listed for %d days</string>
     <string name="login_required">Please sign in</string>
+    <string name="select_service_region">Select service region</string>
+    <string name="create_service">Create Service</string>
+    <string name="publish_service">Publish Service</string>
 </resources>

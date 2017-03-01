@@ -8,7 +8,7 @@ import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.events.LoginEvent;
 import com.captumia.network.RestApiClient;
-import com.utilsframework.android.navdrawer.NavigationActivityInterface;
+import com.utilsframework.android.navdrawer.FragmentsNavigationInterface;
 import com.utilsframework.android.fragments.LazyLoadingListFragment;
 import com.utilsframework.android.network.retrofit.LoginRequiredException;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
@@ -72,8 +72,8 @@ public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment
         return CaptumiaApplication.getInstance().getRestApiClient();
     }
 
-    public NavigationActivityInterface getNavigationInterface() {
-        return (NavigationActivityInterface) getActivity();
+    public FragmentsNavigationInterface getNavigationInterface() {
+        return (FragmentsNavigationInterface) getActivity();
     }
 
     @Override

@@ -74,7 +74,9 @@ public class Post extends BasePost implements Parcelable {
         address = Strings.stringListExcludeEmpty(addressLine1, addressLine2);
 
         String galleryImagesString = getStringField(node, "_gallery_images");
-        photos = Strings.findAll(galleryImagesString, GALLERY_IMAGE_PATTERN);
+        if (galleryImagesString != null) {
+            photos = Strings.findAll(galleryImagesString, GALLERY_IMAGE_PATTERN);
+        }
     }
 
     @JsonSetter("content")

@@ -4,7 +4,7 @@ import com.captumia.app.CaptumiaApplication;
 import com.captumia.R;
 import com.captumia.network.RestApiClient;
 import com.utilsframework.android.fragments.PageLoadingFragment;
-import com.utilsframework.android.navdrawer.NavigationActivityInterface;
+import com.utilsframework.android.navdrawer.FragmentsNavigationInterface;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 
 public abstract class BasePageLoadingFragment extends PageLoadingFragment {
@@ -33,8 +33,8 @@ public abstract class BasePageLoadingFragment extends PageLoadingFragment {
         return CaptumiaApplication.getInstance().getRequestManagerFactory().createRequestManager();
     }
 
-    public NavigationActivityInterface getNavigationInterface() {
-        return (NavigationActivityInterface) getActivity();
+    public FragmentsNavigationInterface getNavigationInterface() {
+        return (FragmentsNavigationInterface) getActivity();
     }
 
     public final RestApiClient getRestApiClient() {

@@ -3,6 +3,8 @@ package com.captumia.app;
 import android.content.Context;
 
 import com.captumia.network.RestApiClient;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
@@ -22,6 +24,8 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class NetworkHandler {
     private final MyRetrofitRequestManagerFactory requestManagerFactory;
@@ -30,16 +34,29 @@ public class NetworkHandler {
     private List<Cookie> additionalCookies = new ArrayList<>();
 
     public NetworkHandler(Context context) {
-        Retrofit.Builder builder = RetrofitTemplates.generateRetrofitWithJackson(
-                RestApiClient.BASE_URL);
         OkHttpClient.Builder clientBuilder = RetrofitTemplates.generateClientWithLogging();
         persistedCookies = new SharedPrefsCookiePersistor(context);
 
         PersistentCookieJar cookieJar = new PersistentCookieJar(
-                new SetCookieCache(), persistedCookies);
+                new SetCookieCache(), persistedCookies) {
+            @Override
+            public synchronized List<Cookie> loadForRequest(HttpUrl url) {
+                List<Cookie> cookies = new ArrayList<>(super.loadForRequest(url));
+                Cookies.removeExpiredCookies(additionalCookies);
+                cookies.addAll(additionalCookies);
+                return cookies;
+            }
+        };
         clientBuilder.cookieJar(cookieJar);
-        Retrofit retrofit = builder.client(
-                clientBuilder.build()).build();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JacksonConverterFactory jacksonConverterFactory = JacksonConverterFactory.
+                create(objectMapper);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(RestApiClient.BASE_URL)
+                .client(clientBuilder.build())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(jacksonConverterFactory).build();
 
         restApiClient = retrofit.create(RestApiClient.class);
         requestManagerFactory = new MyRetrofitRequestManagerFactory(context);
@@ -82,7 +99,7 @@ public class NetworkHandler {
 
     public static Cookie keyValueCookie(String key, String value) {
         return new Cookie.Builder()
-                .domain(RestApiClient.BASE_URL)
+                .domain(RestApiClient.DOMAIN)
                 .path("/")
                 .name(key)
                 .value(value)
