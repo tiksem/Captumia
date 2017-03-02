@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.captumia.R;
 import com.captumia.data.Category;
-import com.captumia.network.HomeLazyLoadingList;
+import com.captumia.network.categories.HomeLazyLoadingList;
 import com.captumia.ui.UiUtils;
 import com.utils.framework.collections.LazyLoadingList;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;

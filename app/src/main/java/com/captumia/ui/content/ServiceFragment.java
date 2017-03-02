@@ -2,13 +2,12 @@ package com.captumia.ui.content;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -17,10 +16,13 @@ import com.captumia.R;
 import com.captumia.data.Media;
 import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
+import com.captumia.data.Review;
 import com.captumia.data.Tag;
-import com.captumia.network.CreateAndPublishServiceRequest;
-import com.captumia.network.RestApiClient;
+import com.captumia.network.posts.CreateAndPublishServiceRequest;
 import com.captumia.network.ServicePublicationListener;
+import com.captumia.network.reviews.ReviewsLazyLoadingList;
+import com.captumia.ui.BaseLazyLoadingFragment;
+import com.captumia.ui.adapters.ReviewsAdapter;
 import com.captumia.ui.forms.AddServiceActivityInterface;
 import com.captumia.ui.forms.BookServiceActivity;
 import com.captumia.ui.UiUtils;
@@ -30,18 +32,20 @@ import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.captumia.ui.imgtransform.DarkenImageTransformation;
 import com.squareup.picasso.Picasso;
 import com.utils.framework.Lists;
+import com.utils.framework.collections.LazyLoadingList;
 import com.utils.framework.strings.Strings;
+import com.utilsframework.android.adapters.ViewArrayAdapter;
 import com.utilsframework.android.fragments.Fragments;
-import com.utilsframework.android.fragments.RequestManagerFragment;
 import com.utilsframework.android.navdrawer.ActionBarTitleProvider;
 import com.utilsframework.android.navdrawer.FragmentsNavigationInterface;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;
 import com.utilsframework.android.view.Alerts;
 import com.utilsframework.android.view.GuiUtilities;
+import com.utilsframework.android.view.listview.ListViews;
 
 import java.util.List;
 
-public class ServiceFragment extends RequestManagerFragment implements ServicePublicationListener,
+public class ServiceFragment extends BaseLazyLoadingFragment<Review> implements ServicePublicationListener,
         ActionBarTitleProvider {
     public static final String POST = "post";
     public static final String PREVIEW_MODE = "previewMode";
@@ -49,23 +53,24 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
     private Post post;
     private View publishButton;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.post_page, null);
+    public void onViewCreated(View vie, Bundle savedInstanceState) {
+        super.onViewCreated(vie, savedInstanceState);
+
+        ListView listView = (ListView) getListView();
+        View header = ListViews.addHeader(listView, R.layout.service_page_header);
+
+        setupHeader(header);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void setupHeader(View header) {
         Context context = getContext();
 
-        setupHeader(view, context);
-        setupPhotoGallery(view, context);
-        setupDescription(view);
+        setupHeaderTop(header, context);
+        setupPhotoGallery(header, context);
+        setupDescription(header);
 
-        View bookButton = view.findViewById(R.id.book_now);
+        View bookButton = header.findViewById(R.id.book_now);
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +78,7 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
             }
         });
 
-        View reviewButton = view.findViewById(R.id.write_a_review_button);
+        View reviewButton = header.findViewById(R.id.write_a_review_button);
         reviewButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -82,9 +87,9 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
                     }
                 });
 
-        setupTags(view);
+        setupTags(header);
 
-        publishButton = view.findViewById(R.id.publish);
+        publishButton = header.findViewById(R.id.publish);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +105,7 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
             publishButton.setVisibility(View.GONE);
         }
 
-        View operatingHoursContainer = view.findViewById(R.id.operation_hours);
+        View operatingHoursContainer = header.findViewById(R.id.operation_hours);
         List<OperatingHoursItem> operationHours = post.getOperationHours();
         if (Lists.isEmpty(operationHours)) {
             operatingHoursContainer.setVisibility(View.GONE);
@@ -200,8 +205,8 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
         }
     }
 
-    private void setupHeader(View view, Context context) {
-        PostViewHolder holder = new PostViewHolder(view);
+    private void setupHeaderTop(View header, Context context) {
+        PostViewHolder holder = new PostViewHolder(header);
         UiUtils.fillPostExcludingImage(holder, post);
         Media media = post.getMedia();
         if (media != null) {
@@ -248,12 +253,32 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
         return (FragmentsNavigationInterface) getActivity();
     }
 
-    public RestApiClient getRestApiClient() {
-        return CaptumiaApplication.getInstance().getRestApiClient();
-    }
-
     public AddServiceActivityInterface getActivityInterface() {
         return (AddServiceActivityInterface) getActivity();
+    }
+
+    @Override
+    protected ViewArrayAdapter<Review, ?> createAdapter() {
+        return new ReviewsAdapter(getContext());
+    }
+
+    @Override
+    protected LazyLoadingList<Review> getLazyLoadingList(RetrofitRequestManager requestManager,
+                                                         String filter) {
+        if (isPreviewMode()) {
+            return LazyLoadingList.emptyList();
+        } else {
+            List<Review> topReviews = post.getTopReviews();
+            if (topReviews == null) {
+                return LazyLoadingList.emptyList();
+            }
+
+            if (topReviews.size() < Post.TOP_REVIEWS_MAX_COUNT) {
+                return LazyLoadingList.decorate(topReviews);
+            }
+        }
+
+        return new ReviewsLazyLoadingList(requestManager, getRestApiClient(), post.getId());
     }
 
     @Override
@@ -263,5 +288,26 @@ public class ServiceFragment extends RequestManagerFragment implements ServicePu
         }
 
         return null;
+    }
+
+    @Override
+    protected int getRetryLoadingButtonId() {
+        return 0;
+    }
+
+    @Override
+    protected int getLoadingViewId() {
+        return 0;
+    }
+
+    @Override
+    protected int getNoInternetConnectionViewId() {
+        // don't display
+        return 0;
+    }
+
+    @Override
+    protected int getRootLayout() {
+        return R.layout.service_layout;
     }
 }

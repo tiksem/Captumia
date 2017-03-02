@@ -1,4 +1,4 @@
-package com.captumia.network;
+package com.captumia.network.posts;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,6 +10,8 @@ import com.captumia.app.NetworkHandler;
 import com.captumia.data.OperatingHoursItem;
 import com.captumia.data.Post;
 import com.captumia.data.Tag;
+import com.captumia.network.RestApiClient;
+import com.captumia.network.ServicePublicationListener;
 import com.utils.framework.ArrayUtils;
 import com.utils.framework.CollectionUtils;
 import com.utils.framework.Lists;

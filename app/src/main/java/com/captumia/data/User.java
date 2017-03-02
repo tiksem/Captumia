@@ -3,7 +3,9 @@ package com.captumia.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     @JsonProperty("ID")
     private int id;
     @JsonProperty("display_name")

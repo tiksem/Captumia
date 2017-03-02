@@ -7,7 +7,7 @@ import android.widget.ListView;
 import com.captumia.R;
 import com.captumia.data.PackageSubscription;
 import com.captumia.events.LoginEvent;
-import com.captumia.network.PackagesLazyLoadingList;
+import com.captumia.network.packages.PackagesLazyLoadingList;
 import com.captumia.ui.BaseLazyLoadingFragment;
 import com.captumia.ui.UiUtils;
 import com.captumia.ui.adapters.PackagesAdapter;
@@ -71,6 +71,6 @@ public class PackagesListFragment extends BaseLazyLoadingFragment<Object>
 
     @Override
     public void onLogin(LoginEvent event) {
-        updateNavigationListWithLastFilter();
+        update();
     }
 }

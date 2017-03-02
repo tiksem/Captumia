@@ -24,6 +24,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class Post extends BasePost implements Parcelable {
+    public static final int TOP_REVIEWS_MAX_COUNT = 3;
     private static final Pattern GALLERY_IMAGE_PATTERN = Pattern.compile("\"([^\"]+)\"");
 
     @JsonProperty("better_featured_image")
@@ -51,6 +52,8 @@ public class Post extends BasePost implements Parcelable {
     private List<OperatingHoursItem> operationHours;
     @JsonIgnore
     private Category category;
+    @JsonProperty("top_reviews")
+    private List<Review> topReviews;
 
     @JsonSetter("__fields")
     public void setFieldsFromJson(JsonNode node) {
@@ -200,24 +203,17 @@ public class Post extends BasePost implements Parcelable {
 
         return media.getSourceUrl();
     }
-//    public Map<String, RequestBody> getPostRequestMap() {
-//        Map<String, RequestBody> result = new HashMap<>();
-//        result.put("job_title", RequestBodies.fromString(title));
-//        if (location != null) {
-//            result.put("job_location", RequestBodies.fromString(location));
-//        }
-//        if (region != null) {
-//            result.put("job_region", RequestBodies.fromString(region));
-//        }
-//        if (email != null) {
-//            result.put("application", RequestBodies.fromString(email));
-//        }
-//        result.put("job_category[]", RequestBodies.fromString(category));
-//    }
+
+    public List<Review> getTopReviews() {
+        return topReviews;
+    }
+
+    public void setTopReviews(List<Review> topReviews) {
+        this.topReviews = topReviews;
+    }
 
     public Post() {
     }
-
 
     @Override
     public int describeContents() {
@@ -240,6 +236,7 @@ public class Post extends BasePost implements Parcelable {
         dest.writeParcelable(this.region, flags);
         dest.writeTypedList(this.operationHours);
         dest.writeParcelable(this.category, flags);
+        dest.writeTypedList(this.topReviews);
     }
 
     protected Post(Parcel in) {
@@ -257,6 +254,7 @@ public class Post extends BasePost implements Parcelable {
         this.region = in.readParcelable(Region.class.getClassLoader());
         this.operationHours = in.createTypedArrayList(OperatingHoursItem.CREATOR);
         this.category = in.readParcelable(Category.class.getClassLoader());
+        this.topReviews = in.createTypedArrayList(Review.CREATOR);
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {

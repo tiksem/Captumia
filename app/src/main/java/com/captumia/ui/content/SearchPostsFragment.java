@@ -3,7 +3,7 @@ package com.captumia.ui.content;
 import android.content.Context;
 
 import com.captumia.data.Post;
-import com.captumia.network.SearchPostsLazyLoadingList;
+import com.captumia.network.posts.SearchPostsLazyLoadingList;
 import com.captumia.ui.BasePostsFragment;
 import com.utils.framework.collections.LazyLoadingList;
 import com.utilsframework.android.fragments.Fragments;

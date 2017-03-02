@@ -1,6 +1,7 @@
-package com.captumia.network;
+package com.captumia.network.packages;
 
 import com.captumia.data.PackageSubscription;
+import com.captumia.network.RestApiClient;
 import com.utils.framework.Lists;
 import com.utils.framework.Primitive;
 import com.utilsframework.android.network.MultipleCallsOnePageRetrofitLazyLoadingList;

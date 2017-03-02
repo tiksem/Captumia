@@ -7,14 +7,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.captumia.R;
+import com.captumia.data.Review;
 import com.captumia.ui.RequestManagerActivity;
 import com.utilsframework.android.view.GuiUtilities;
 
 import java.util.List;
 
 public class WriteReviewActivity extends RequestManagerActivity {
-    private static final int STARS_COUNT = 5;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +31,9 @@ public class WriteReviewActivity extends RequestManagerActivity {
             star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int starIndex = finalIndex % STARS_COUNT;
+                    int starIndex = finalIndex % Review.MAX_RATING_VALUE;
                     int firstStarIndex = finalIndex - starIndex;
-                    for (int i = 0; i < STARS_COUNT; i++) {
+                    for (int i = 0; i < Review.MAX_RATING_VALUE; i++) {
                         ImageView starToFill = stars.get(i + firstStarIndex);
                         if (i <= starIndex) {
                             starToFill.setImageResource(R.drawable.ic_star);

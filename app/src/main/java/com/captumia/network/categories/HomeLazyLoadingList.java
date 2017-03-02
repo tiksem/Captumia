@@ -1,6 +1,7 @@
-package com.captumia.network;
+package com.captumia.network.categories;
 
 import com.captumia.data.Category;
+import com.captumia.network.RestApiClient;
 import com.utils.framework.KeyProvider;
 import com.utilsframework.android.network.RetrofitOnePageLazyLoadingList;
 import com.utilsframework.android.network.retrofit.RetrofitRequestManager;

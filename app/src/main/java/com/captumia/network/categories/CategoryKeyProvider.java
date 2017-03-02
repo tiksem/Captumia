@@ -1,4 +1,4 @@
-package com.captumia.network;
+package com.captumia.network.categories;
 
 import com.captumia.data.Category;
 import com.utils.framework.KeyProvider;

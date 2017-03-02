@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.captumia.R;
 import com.captumia.data.Category;
-import com.captumia.network.CategoriesLazyLoadingList;
+import com.captumia.network.categories.CategoriesLazyLoadingList;
 import com.captumia.ui.BaseLazyLoadingFragment;
 import com.captumia.ui.adapters.CategoryAdapter;
 import com.utils.framework.collections.LazyLoadingList;

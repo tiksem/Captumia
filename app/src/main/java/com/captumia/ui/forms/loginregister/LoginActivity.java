@@ -111,7 +111,7 @@ public class LoginActivity extends RequestManagerActivity {
     }
 
     private void onUserIsReady(User user) {
-        CaptumiaApplication.getInstance().login();
+        CaptumiaApplication.getInstance().login(user);
         Toasts.toast(this, R.string.hello_user_toast, user.getDisplayName());
         finish();
     }

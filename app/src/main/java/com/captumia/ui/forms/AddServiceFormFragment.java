@@ -195,10 +195,6 @@ public class AddServiceFormFragment extends BasePageLoadingFragment implements E
 
     private void setupCoverImage(View view) {
         coverImageView = (ImageView) view.findViewById(R.id.cover_image);
-        View coverImageSelector = view.findViewById(R.id.select_cover_image);
-        coverImageSelector.setOnClickListener(imagePickListener());
-        coverImageView.setOnClickListener(imagePickListener());
-
         coverImageContainer = view.findViewById(R.id.cover_image_container);
 
         view.findViewById(R.id.delete_image).setOnClickListener(new View.OnClickListener() {
@@ -236,15 +232,6 @@ public class AddServiceFormFragment extends BasePageLoadingFragment implements E
         coverImageContainer.setVisibility(View.GONE);
         coverImageView.setImageDrawable(null);
         coverImage = null;
-    }
-
-    private View.OnClickListener imagePickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickCoverImage();
-            }
-        };
     }
 
     @OnClick({R.id.cover_image, R.id.select_cover_image})

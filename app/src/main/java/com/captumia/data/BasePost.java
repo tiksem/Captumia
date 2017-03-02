@@ -35,49 +35,15 @@ public class BasePost implements Parcelable {
     }
 
     protected final JsonNode getFieldItem(JsonNode fields, String key) {
-        JsonNode array = fields.get(key);
-        if (array != null && array.size() > 0) {
-            JsonNode value = array.get(0);
-            if (value == null) {
-                return null;
-            }
-
-            return value;
-        }
-
-        return null;
+        return Utils.getFieldItem(fields, key);
     }
 
     protected final String getStringField(JsonNode fields, String key) {
-        JsonNode node = getFieldItem(fields, key);
-        if (node == null) {
-            return null;
-        }
-
-        String text = node.asText();
-        if (Strings.isEmpty(text)) {
-            return null;
-        }
-
-        return text;
+        return Utils.getStringField(fields, key);
     }
 
     protected final int getIntField(JsonNode fields, String key, int defaultValue) {
-        JsonNode node = getFieldItem(fields, key);
-        if (node == null) {
-            return defaultValue;
-        }
-
-        if (node.isTextual()) {
-            String asText = node.asText();
-            if (Strings.isEmpty(asText)) {
-                return defaultValue;
-            }
-
-            return Integer.valueOf(asText);
-        }
-
-        return node.asInt();
+        return Utils.getIntField(fields, key, defaultValue);
     }
 
     @JsonSetter("__fields")
@@ -105,15 +71,4 @@ public class BasePost implements Parcelable {
         this.title = in.readString();
     }
 
-    public static final Creator<BasePost> CREATOR = new Creator<BasePost>() {
-        @Override
-        public BasePost createFromParcel(Parcel source) {
-            return new BasePost(source);
-        }
-
-        @Override
-        public BasePost[] newArray(int size) {
-            return new BasePost[size];
-        }
-    };
 }

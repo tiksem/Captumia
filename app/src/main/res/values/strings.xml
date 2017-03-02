@@ -94,4 +94,5 @@
     <string name="publish_service">Publish Service</string>
     <string name="login_with_facebook">Login/Register with Facebook</string>
     <string name="login_with_facebook_failed">Login with facebook failed</string>
+    <string name="date_ago" formatted="false">%s ago</string>
 </resources>

@@ -91,8 +91,8 @@ public interface RestApiClient {
     @GET("wp-json/wp/v2/users/me")
     Call<User> me();
 
-    @GET("wp-json/custom/test")
-    Call<ResponseBody> test();
-    @GET("wp-json/custom/get_nonce")
-    Call<Nonce> getNonce();
+    @GET("wp-json/wp/v2/comments")
+    Call<List<Review>> getReviews(@Query("post") int postId,
+                                  @Query("page") int page,
+                                  @Query("per_page") int itemsPerPage);
 }

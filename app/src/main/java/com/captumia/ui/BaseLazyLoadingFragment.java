@@ -39,7 +39,7 @@ public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment
     }
 
     @Override
-    protected int getLoadingResourceId() {
+    protected int getLoadingViewId() {
         return R.id.loading;
     }
 
@@ -77,14 +77,14 @@ public abstract class BaseLazyLoadingFragment<T> extends LazyLoadingListFragment
     }
 
     @Override
-    protected void handleNavigationListError(int errorCount, Throwable e) {
+    protected void handleLoadingError(int errorCount, Throwable e) {
         if (e instanceof LoginRequiredException) {
             noConnectionTextView.setText(R.string.login_required);
         } else {
             noConnectionTextView.setText(R.string.no_internet_connection);
         }
 
-        super.handleNavigationListError(errorCount, e);
+        super.handleLoadingError(errorCount, e);
     }
 
     @Override

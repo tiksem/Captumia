@@ -27,6 +27,7 @@
             android:layout_height="wrap_content">
 
             <TableRow
+                android:paddingBottom="5dp"
                 >
 
                 <TextView
@@ -39,7 +40,9 @@
                     layout="@layout/write_review_stars"/>
             </TableRow>
 
-            <TableRow>
+            <TableRow
+                android:paddingBottom="5dp"
+                >
 
                 <TextView
                     style="@style/writeReviewRatingText"
@@ -51,7 +54,9 @@
                     layout="@layout/write_review_stars"/>
             </TableRow>
 
-            <TableRow>
+            <TableRow
+                android:paddingBottom="5dp"
+                >
 
                 <TextView
                     style="@style/writeReviewRatingText"
@@ -63,7 +68,9 @@
                     layout="@layout/write_review_stars"/>
             </TableRow>
 
-            <TableRow>
+            <TableRow
+                android:paddingBottom="5dp"
+                >
 
                 <TextView
                     style="@style/writeReviewRatingText"
