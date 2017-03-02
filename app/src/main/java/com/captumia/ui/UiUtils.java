@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.captumia.R;
 import com.captumia.data.Post;
+import com.captumia.data.Review;
 import com.captumia.ui.adapters.holders.PostViewHolder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -43,7 +44,7 @@ public class UiUtils {
                                      final Post post,
                                      final Transformation transformation) {
         loadImageWithCenterCrop(picasso.load(post.getMedia().getDisplayInListUrl()).
-                transform(transformation).placeholder(R.drawable.post_image_placeholder),
+                        transform(transformation).placeholder(R.drawable.post_image_placeholder),
                 holder.image);
     }
 
@@ -52,9 +53,9 @@ public class UiUtils {
         GuiUtilities.executeWhenViewMeasuredUsingLoop(imageView, new Runnable() {
             @Override
             public void run() {
-                        picassoRequestCreator.
-                                resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
-                                centerCrop().
+                picassoRequestCreator.
+                        resize(imageView.getMeasuredWidth(), imageView.getMeasuredHeight()).
+                        centerCrop().
                         into(imageView);
             }
         });
@@ -65,5 +66,12 @@ public class UiUtils {
         Picasso.with(background.getContext()).load(R.drawable.home_header_background)
                 .placeholder(R.drawable.rect_image_placeholder)
                 .into(background);
+    }
+
+    public static void fillPostRating(List<ImageView> stars, int rating) {
+        for (int i = 0; i < Review.MAX_RATING_VALUE; i++) {
+            int drawable = i < rating ? R.drawable.ic_star : R.drawable.ic_star_empty;
+            stars.get(i).setImageResource(drawable);
+        }
     }
 }

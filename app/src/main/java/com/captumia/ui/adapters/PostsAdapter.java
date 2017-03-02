@@ -37,5 +37,6 @@ public class PostsAdapter extends LazyLoadingListAdapter<Post, PostViewHolder> {
         PostImageTransformation transformation = new PostImageTransformation(view.getContext());
         UiUtils.fillPostImage(picasso, holder, post, transformation);
         UiUtils.fillPostExcludingImage(holder, post);
+        UiUtils.fillPostRating(holder.rating, post.getRating());
     }
 }

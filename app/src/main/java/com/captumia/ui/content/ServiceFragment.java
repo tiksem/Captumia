@@ -7,6 +7,7 @@ import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -96,6 +97,10 @@ public class ServiceFragment extends BaseLazyLoadingFragment<Review> implements 
                 onPublish();
             }
         });
+
+        List<ImageView> stars = GuiUtilities.getAllChildrenRecursiveInSubView(header, R.id.rating,
+                ImageView.class);
+        UiUtils.fillPostRating(stars, post.getRating());
 
         if (isPreviewMode()) {
             GuiUtilities.setVisibility(View.GONE, bookButton, reviewButton);

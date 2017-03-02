@@ -54,6 +54,8 @@ public class Post extends BasePost implements Parcelable {
     private Category category;
     @JsonProperty("top_reviews")
     private List<Review> topReviews;
+    @JsonIgnore
+    private int rating;
 
     @JsonSetter("__fields")
     public void setFieldsFromJson(JsonNode node) {
@@ -80,6 +82,8 @@ public class Post extends BasePost implements Parcelable {
         if (galleryImagesString != null) {
             photos = Strings.findAll(galleryImagesString, GALLERY_IMAGE_PATTERN);
         }
+
+        rating = getIntField(node, "rating", 0);
     }
 
     @JsonSetter("content")
@@ -187,6 +191,14 @@ public class Post extends BasePost implements Parcelable {
         this.operationHours = operationHours;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -237,6 +249,7 @@ public class Post extends BasePost implements Parcelable {
         dest.writeTypedList(this.operationHours);
         dest.writeParcelable(this.category, flags);
         dest.writeTypedList(this.topReviews);
+        dest.writeInt(this.rating);
     }
 
     protected Post(Parcel in) {
@@ -255,6 +268,7 @@ public class Post extends BasePost implements Parcelable {
         this.operationHours = in.createTypedArrayList(OperatingHoursItem.CREATOR);
         this.category = in.readParcelable(Category.class.getClassLoader());
         this.topReviews = in.createTypedArrayList(Review.CREATOR);
+        this.rating = in.readInt();
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
